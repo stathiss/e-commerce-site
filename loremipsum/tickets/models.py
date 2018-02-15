@@ -16,7 +16,7 @@ class Event(models.Model):
 class Provider(AbstractBaseUser):
     full_name = models.TextField()
     email = models.EmailField()
-    address = models.TextField()
+    address = models.TextField(default='')
     afm = models.TextField()
     doy = models.TextField()
     legal_representative = models.TextField()
@@ -29,7 +29,7 @@ class Provider(AbstractBaseUser):
 class Parent(AbstractBaseUser):
     email = models.EmailField()
     full_name = models.TextField()
-    address = models.TextField()
+    address = models.TextField(default='')
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELD = ['full_name', 'email']

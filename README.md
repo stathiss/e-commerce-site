@@ -18,3 +18,22 @@
 3. git pull το lorem-ipsum repo
 4. sudo docker-compose up
 5. Ανοίγω localhost:8000, πρέπει να βλέπω το django
+
+
+## Development
+
+### Πώς τρέχουμε τον server 
+
+`sudo docker-compose up`
+
+### Πώς τρέχουμε εντολές με το manage.py στο docker
+
+`sudo docker-compose run web python3 loremipsum/manage.py ...`
+
+### Πώς φτιάχνουμε χρήστη για το django admin
+
+`sudo docker-compose run web python3 loremipsum/manage.py createsuperuser`
+
+### Πώς εφαρμόζουμε αλλαγές των models στη βάση
+
+`sudo docker-compose run web python3 loremipsum/manage.py migrate`
