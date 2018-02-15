@@ -13,7 +13,6 @@ class Event(models.Model):
     longitude = models.DecimalField(decimal_places=5, max_digits=7)
     provider = models.ForeignKey('Provider', on_delete=models.CASCADE)
 
-
 class Provider(AbstractBaseUser):
     full_name = models.TextField()
     email = models.EmailField()
@@ -30,6 +29,7 @@ class Provider(AbstractBaseUser):
 class Parent(AbstractBaseUser):
     email = models.EmailField()
     full_name = models.TextField()
+    address = models.TextField()
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELD = ['full_name', 'email']
