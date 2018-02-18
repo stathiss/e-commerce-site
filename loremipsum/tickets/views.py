@@ -7,8 +7,11 @@ from tickets.models import Event
 from tickets.serializers import EventSerializer
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the tickets index.")
+    return render(request, 'index.html')
 
+
+def about(request):
+    return render(request, 'about.html')
 
 @api_view(['GET', 'POST'])
 def event_list(request, format=None):
