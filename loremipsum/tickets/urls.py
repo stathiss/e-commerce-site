@@ -9,7 +9,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('api/events/', views.event_list, name='event_list'),
     path('api/events/<int:pk>/', views.event_detail, name='event_detail'),
-    url(r'^accounts/', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
