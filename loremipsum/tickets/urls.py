@@ -1,8 +1,9 @@
+from django.urls import include, path
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
-from . import views
+from tickets import views
 
 urlpatterns = [
 	path('about/', views.about, name='about'),

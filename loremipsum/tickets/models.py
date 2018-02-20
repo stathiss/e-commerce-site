@@ -2,11 +2,11 @@ from django.db import models
 from django import forms
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import AbstractUser
+from django.utils.html import escape, mark_safe
 
 class User(AbstractUser):
     is_parent = models.BooleanField('parent status', default = False)
     is_provider = models.BooleanField('provider status', default = False)
-
 
 class Event(models.Model):
     title = models.TextField(max_length=256)
@@ -29,18 +29,12 @@ class Provider(models.Model):
     legal_representative = models.TextField()
     adt = models.TextField()
     site = models.URLField()
-    USERNAME_FIELD = 'email'
-    EMAIL_FIELD = 'email'
-    REQUIRED_FIELD = ['full_name', 'email', 'address', 'site']
 
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,default='')
     email = models.EmailField(default='')
     full_name = models.TextField()
     address = models.TextField(default='')
-    USERNAME_FIELD = 'email'
-    EMAIL_FIELD = 'email'
-    REQUIRED_FIELD = ['full_name', 'email']
 
 class Review(models.Model):
     date = models.DateTimeField('review date')

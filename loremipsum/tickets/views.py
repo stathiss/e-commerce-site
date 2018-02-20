@@ -9,7 +9,7 @@ from django.shortcuts import redirect,render
 from django.views.generic import TemplateView
 from django.views.generic import CreateView
 
-from forms import ParentSignUpForm, ProviderSignUpForm
+from tickets.forms import ParentSignUpForm, ProviderSignUpForm
 from tickets.models import User
 
 def index(request):
@@ -20,7 +20,6 @@ def about(request):
 
 class SignUpView(TemplateView):
     template_name = 'account/signup.html'
-
 
 def home(request):
     if request.user.is_authenticated:
@@ -41,7 +40,7 @@ class ParentSignUpView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
+        #login(self.request, user)
         return redirect('/about/')
 
 class ProviderSignUpView(CreateView):
@@ -55,7 +54,7 @@ class ProviderSignUpView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
+        #login(self.request, user)
         return redirect('/')
 
 
