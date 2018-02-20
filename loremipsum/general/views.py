@@ -9,7 +9,7 @@ from django.shortcuts import redirect,render
 from django.views.generic import TemplateView
 from django.views.generic import CreateView
 
-from forms import ParentSignUpForm,ProviderSignUpForm
+from forms import ParentSignUpForm, ProviderSignUpForm
 from tickets.models import User
 
 def index(request):
@@ -33,7 +33,7 @@ def home(request):
 class ParentSignUpView(CreateView):
     model = User
     form_class = ParentSignUpForm
-    template_name = '../templates/account/signup.html'
+    template_name = '../templates/account/signup_form.html'
 
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'parent'
@@ -47,7 +47,7 @@ class ParentSignUpView(CreateView):
 class ProviderSignUpView(CreateView):
     model = User
     form_class = ProviderSignUpForm
-    template_name = '../templates/account/signup.html'
+    template_name = '../templates/account/signup_form.html'
 
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'provider'
