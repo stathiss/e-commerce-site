@@ -25,24 +25,14 @@
                     {% if user.is_authenticated %}Hello, {{ user.username }}{% else %}Account{% endif %} <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    {% if request.user.is_authenticated %}
-                      <li>
-                          <a href="{% url 'account_logout' %}">
-                              <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;LogOut
-                          </a>
-                      </li>
-                    {% else %}
+                    
+                        
                         <li>
-                            <a href="{% url 'account_login' %}">
-                               <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;LogIn
-                            </a>
-                        </li>
-                        <li>
-                          <a href="{% url 'account_signup' %}">
+                          <a href="{% url 'signup' %}">
                             <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp;SignUp
                           </a>
                         </li>
-                    {% endif %}
+                    
                 </ul>
             </li>
           </ul>

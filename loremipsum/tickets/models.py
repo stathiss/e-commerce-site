@@ -1,6 +1,12 @@
 from django.db import models
 from django import forms
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    is_parent = models.BooleanField('parent status', default = False)
+    is_provider = models.BooleanField('provider status', default = False)
+
 
 class Event(models.Model):
     title = models.TextField(max_length=256)
@@ -13,7 +19,8 @@ class Event(models.Model):
     longitude = models.DecimalField(decimal_places=5, max_digits=7)
     provider = models.ForeignKey('Provider', on_delete=models.CASCADE)
 
-class Provider(AbstractBaseUser):
+class Provider(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,default='')
     full_name = models.TextField()
     email = models.EmailField()
     address = models.TextField(default='')
@@ -26,8 +33,9 @@ class Provider(AbstractBaseUser):
     EMAIL_FIELD = 'email'
     REQUIRED_FIELD = ['full_name', 'email', 'address', 'site']
 
-class Parent(AbstractBaseUser):
-    email = models.EmailField()
+class Parent(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,default='')
+    email = models.EmailField(default='')
     full_name = models.TextField()
     address = models.TextField(default='')
     USERNAME_FIELD = 'email'
