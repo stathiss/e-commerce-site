@@ -7,6 +7,7 @@ from tickets import views
 
 urlpatterns = [
 	path('about/', views.about, name='about'),
+	path('profile/', views.profile, name='profile'),
     path('', views.index, name='index'),
     path('api/events/', views.event_list, name='event_list'),
     path('accounts/', include('django.contrib.auth.urls')),
