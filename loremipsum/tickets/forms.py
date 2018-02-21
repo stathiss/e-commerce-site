@@ -27,7 +27,7 @@ class ParentSignUpForm(UserCreationForm):
 		user.is_parent = True
 		user.save()
 		#up.save()
-		parent = Parent.objects.create(user=user, full_name=fn, address=self.cleaned_data['address'])
+		parent = Parent.objects.create(user=user, full_name=fn, email=user.email, address=self.cleaned_data['address'])
 		return user
 
 class ProviderSignUpForm(UserCreationForm):
