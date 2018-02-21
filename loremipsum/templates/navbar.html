@@ -31,6 +31,11 @@
                               <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
                           </a>
                       </li>
+                      <li>
+                          <a href="{% url 'profile' %}">
+                              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Profile
+                           </a>
+                      </li>  
                   {% else %}
                       <li>
                         <a href="{% url 'login' %}">

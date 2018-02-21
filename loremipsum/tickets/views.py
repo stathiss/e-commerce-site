@@ -19,6 +19,9 @@ def index(request):
 def about(request):
     return render(request, 'about.html')
 
+def profile(request):
+    return render(request, 'profile.html')    
+
 class SignUpView(TemplateView):
     template_name = 'registration/signup.html'
 
@@ -41,7 +44,7 @@ class ParentSignUpView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        #login(self.request, user)
+        login(self.request, user)
         return redirect('/about/')
 
 class ProviderSignUpView(CreateView):
@@ -55,7 +58,7 @@ class ProviderSignUpView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        #login(self.request, user)
+        login(self.request, user)
         return redirect('/')
 
 
