@@ -2,7 +2,95 @@
 
 {% block content %}
 
+{% if user.is_authenticated %} 
+	{% if user.is_parent %}
+		<h1> Καλωσήρθες, {{user.username}} </h1>
 
-<h1> {{user.parent.address}} </h1>
+	
+
+
+
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+      <div class="row">
+      <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
+        <A href="/accounts/logout.html" >Logout</A>
+       <br>
+	<marquee behavior="scroll" bgcolor="white" loop="-1" width="40%">
+	   <i>
+	      <font color="blue">
+	        Today's date is : 
+	        <strong>
+	         <span id="time"></span>
+	        </strong>           
+	      </font>
+	   </i>
+	</marquee> 
+      </div>
+        	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+   
+   
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <center><h3 class="panel-title"> {{user.parent.full_name}} </h3></center>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                
+                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
+                  <dl>
+                    <dt>DEPARTMENT:</dt>
+                    <dd>Administrator</dd>
+                    <dt>HIRE DATE</dt>
+                    <dd>11/12/2013</dd>
+                    <dt>DATE OF BIRTH</dt>
+                       <dd>11/12/2013</dd>
+                    <dt>GENDER</dt>
+                    <dd>Male</dd>
+                  </dl>
+                </div>-->
+                  <table class="table table-user-information">
+                    <tbody>
+                        <tr>
+                        <td>Διεύθυνση</td>
+                        <td> {{user.parent.address}} </td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td><a href="mailto:">{{user.email}}</a></td>
+                     
+                    </tbody>
+                  </table>
+                  <a href="#" class="btn btn-primary">My Sales Performance</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+	{% elif user.is_provider %}
+
+	<h1>PROVIDER</h1>
+
+	{% else %}
+
+	<p>You are not allowed to view this page, go back to the <a href="/">home</a> page.</p>
+
+	{% endif %}
+	
+
+
+{% else %} <h2>You are not authorized to enter here, please Sign Up or Log In if you have an account!</h2>
+
+{% endif %}
 
 {% endblock %}
