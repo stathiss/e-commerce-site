@@ -9,6 +9,7 @@ urlpatterns = [
 	path('about/', views.about, name='about'),
     path('', views.index, name='index'),
     path('api/events/', views.event_list, name='event_list'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('api/events/<int:pk>/', views.event_detail, name='event_detail'),
 	path('accounts/signup/', views.SignUpView.as_view(), name='signup'),
     path('accounts/signup/parent/', views.ParentSignUpView.as_view(), name='parent_signup'),

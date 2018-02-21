@@ -8,6 +8,7 @@ from tickets.serializers import EventSerializer
 from django.shortcuts import redirect,render
 from django.views.generic import TemplateView
 from django.views.generic import CreateView
+from django.contrib.auth import login
 
 from tickets.forms import ParentSignUpForm, ProviderSignUpForm
 from tickets.models import User
@@ -19,7 +20,7 @@ def about(request):
     return render(request, 'about.html')
 
 class SignUpView(TemplateView):
-    template_name = 'account/signup.html'
+    template_name = 'registration/signup.html'
 
 def home(request):
     if request.user.is_authenticated:
@@ -32,7 +33,7 @@ def home(request):
 class ParentSignUpView(CreateView):
     model = User
     form_class = ParentSignUpForm
-    template_name = '../templates/account/signup_form.html'
+    template_name = '../templates/registration/signup_form.html'
 
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'parent'
@@ -46,7 +47,7 @@ class ParentSignUpView(CreateView):
 class ProviderSignUpView(CreateView):
     model = User
     form_class = ProviderSignUpForm
-    template_name = '../templates/account/signup_form.html'
+    template_name = '../templates/registration/signup_form.html'
 
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'provider'
