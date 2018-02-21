@@ -1,16 +1,16 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
-from django.forms.utils import ValidationError
 
 from tickets.models import (Parent, Provider, User)
+from tickets.validators import *
 
 class ParentSignUpForm(UserCreationForm):
 
 	first_name = forms.CharField(max_length=30, label='First Name')
 	last_name = forms.CharField(max_length=30, label='Last Name')
 	address = forms.CharField(max_length=30, label='Address')
-	email = forms.EmailField(max_length=30, label='Email')
+	email = MyEmailField(max_length=30, help_text='example@example.com', label='Email')
 
 	class Meta(UserCreationForm.Meta):
 		model = User
@@ -35,12 +35,12 @@ class ProviderSignUpForm(UserCreationForm):
 	first_name = forms.CharField(max_length=30, label='First Name')
 	last_name = forms.CharField(max_length=30, label='Last Name')
 	address = forms.CharField(max_length=30, label='Διεύθυνση')
-	email = forms.EmailField(max_length=30, help_text='example@example.com', label='Email')
-	afm = forms.CharField(max_length=30, help_text= 'π.χ. 123456789', label='ΑΦΜ')
+	email = MyEmailField(max_length=30, help_text='example@example.com', label='Email')
+	afm = forms.CharField(max_length=30, help_text= 'π.χ. 123456789', label='ΑΦΜ', validators=[RegexValidator(regex="^\d{9}$", message="Παρακαλώ εισάγετε έγκυρο ΑΦΜ (9 ψηφία)")])
 	doy = forms.CharField(max_length=30, label='ΔΟΥ')
 	lr = forms.CharField(max_length=30, label='Νομικός Εκπρόσωπος')
-	adt = forms.CharField(max_length=30, label='Αριθμός Δελτίου Ταυτότητας')
-	site = forms.URLField(max_length=30, required=False, label='WebSite')
+	adt = forms.CharField(max_length=30, label='Αριθμός Δελτίου Ταυτότητας', validators=[RegexValidator(regex="^\d{6,7}$", message="Παρακαλώ εισάγετε έγκυρο ΑΔΤ (6-7 ψηφία)")])
+	site = forms.URLField(max_length=30, required=False, label='WebSite', validators=[URLValidator(message="Παρακαλώ εισάγετε έγκυρη URL")])
 
 
 	class Meta(UserCreationForm.Meta):
