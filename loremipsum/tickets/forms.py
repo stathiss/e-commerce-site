@@ -23,7 +23,7 @@ class ParentSignUpForm(UserCreationForm):
 		user.email = self.cleaned_data['email']
 		fn = user.first_name + ' ' + user.last_name
 		#up = user.parent
-		#user.address = self.cleaned_data['address']
+		user.address = self.cleaned_data['address']
 		user.is_parent = True
 		user.save()
 		#up.save()
