@@ -17,7 +17,13 @@ class Event(models.Model):
     location = models.TextField(max_length=256)
     latitude = models.DecimalField(decimal_places=5, max_digits=7)
     longitude = models.DecimalField(decimal_places=5, max_digits=7)
+    min_age = models.IntegerField()
+    max_age = models.IntegerField()
+    cost = models.IntegerField()
     provider = models.ForeignKey('Provider', on_delete=models.CASCADE)
+
+    def get_absolute_url(self):
+        return "/event/%i" % self.id
 
 class Provider(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,default='')
@@ -29,6 +35,8 @@ class Provider(models.Model):
     legal_representative = models.TextField()
     adt = models.TextField()
     site = models.URLField()
+    def get_absolute_url(self):
+        return "/provider/%i" % self.user.id
 
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,default='')
