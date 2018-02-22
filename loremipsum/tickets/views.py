@@ -45,7 +45,7 @@ class ParentSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('/about/')
+        return redirect('/profile/')
 
 class ProviderSignUpView(CreateView):
     model = User
@@ -59,7 +59,7 @@ class ProviderSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('/')
+        return redirect('/profile/')
 
 
 @api_view(['GET', 'POST'])

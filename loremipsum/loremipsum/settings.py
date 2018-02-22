@@ -132,7 +132,7 @@ AUTH_USER_MODEL = 'tickets.User'
 SITE_ID = 1
 
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
 
 
