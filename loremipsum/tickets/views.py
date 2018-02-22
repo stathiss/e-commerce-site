@@ -1,14 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from tickets.models import Event
+from tickets.models import Event, Provider
 from tickets.serializers import EventSerializer
 from django.shortcuts import redirect,render
-from django.views.generic import TemplateView
-from django.views.generic import CreateView
+from django.views.generic import TemplateView, CreateView, ListView
 from django.contrib.auth import login
+
 
 from tickets.forms import ParentSignUpForm, ProviderSignUpForm
 from tickets.models import User
@@ -20,7 +20,7 @@ def about(request):
     return render(request, 'about.html')
 
 def profile(request):
-    return render(request, 'profile.html')    
+    return render(request, 'profile.html')
 
 class SignUpView(TemplateView):
     template_name = 'registration/signup.html'
@@ -103,3 +103,39 @@ def event_detail(request, pk, format=None):
     elif request.method == 'DELETE':
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+"""
+Distance between two points with the Haversine formula
+https://stackoverflow.com/questions/19412462/getting-distance-between-two-points-based-on-latitude-longitude
+"""
+def get_distance(lat1, lon1, lat2, lon2):
+    from math import sin, cos, sqrt, atan2, radians
+    # approximate radius of earth in km
+    R = 6373.0
+
+    lat1 = radians(lat1)
+    lon1 = radians(lon1)
+    lat2 = radians(lat2)
+    lon2 = radians(lon2)
+
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    return R * c
+
+def EventListView(request):
+    query_string = ''
+    found_entries = None
+    template_name = 'event_list.html'
+    home_lat = 37.983810
+    home_lon = 23.7275
+    found_entries = []
+    events = Event.objects.all()
+    for e in events:
+        if get_distance(home_lat, home_lon, e.latitude, e.longitude) <= 5:
+            found_entries.append(e)
+    return render_to_response(template_name,
+                          { 'event_list': found_entries })

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% block head_title %}Καλωσήρθατε | {{ block.super }}{% endblock %}
+{% block content %}
+
+
+{% if form %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+        {{ form }}
+        </table>
+        <input type="submit" value="Submit" />
+    </form>
+    
+    {% else %}
+<h1> Αποτελέσματα</h1>
+<div>
+{% if event_list %}
+  <input class="form-control" id="table-event-filter-input" type="text" placeholder="Φιλτράρισμα">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Τίτλος</th>
+      <th>Ημερομηνία</th>
+      <th>Username</th>
+    </tr>
+  </thead>
+  <tbody id="table-event">
+    {% for e in event_list %}
+    <tr>
+      <td>
+        <a href="{{ e.get_absolute_url }}">{{ e.title }}</a>
+      </td>
+      <td>{{ e.event_date }}</td>
+      <td>@twitter</td>
+    </tr>
+      {% endfor %}
+
+  </tbody>
+</table>
+<script>
+$(document).ready(function(){
+  $("#table-event-filter-input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#table-event tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+    {% else %}
+      0 αποτελέσματα.
+    {% endif %}  
+</div>
+  {% endif %}
+{% endblock %}
