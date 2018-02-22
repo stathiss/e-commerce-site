@@ -30,6 +30,7 @@
       <th>Κόστος</th>
       <th>Διαθεσιμότητα</th>
       <th>Ηλ. εύρος</th>
+      <th></th>
     </tr>
   </thead>
   <tbody id="table-event">
@@ -43,6 +44,7 @@
       <td>{{ e.cost }}</td>
       <td>{{ e.availability }}/{{ e.capacity}}</td>
       <td>{{ e.min_age }}-{{ e.max_age}}</td>
+      <td><a href="{{ e.get_absolute_url }}/buy" class="btn btn-default">Αγορά</a></td>
     </tr>
       {% endfor %}
 

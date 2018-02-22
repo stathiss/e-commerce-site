@@ -4,7 +4,7 @@
 {% block head_title %}{{ event.title }} {{ event.event_date }}{{ block.super }}{% endblock %}
 {% block content %}
 
-<h1> {{ event.title }} <button class="btn btn-default">Αγορά</button></h1>
+<h1> {{ event.title }} <a href="{{ event.get_absolute_url }}/buy" class="btn btn-default">Αγορά</a></h1>
 <div>
   <p><strong>Τίτλος</strong> {{ event.title }}</p>
   <p><strong>Ημερομηνία</strong> {{ event.event_date }}</p>

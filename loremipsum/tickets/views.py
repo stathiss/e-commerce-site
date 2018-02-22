@@ -137,7 +137,7 @@ def EventListView(request):
     for e in events:
         if get_distance(home_lat, home_lon, e.latitude, e.longitude) <= 5:
             found_entries.append(e)
-    return render_to_response(template_name,
+    return render(request, template_name,
                           { 'event_list': found_entries })
 def EventDetailView(request, pk):
     template_name = 'event_detail.html'
