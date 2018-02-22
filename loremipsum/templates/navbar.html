@@ -15,25 +15,26 @@
           <ul class="nav navbar-nav">
           {% url 'index' as index %}
           {% url 'about' as about %}
-            <li {% if request.path == index %} class="active" {% endif %}><a href="{% url 'index' %}">Home</a></li>
-            <li {% if request.path == about %} class="active" {% endif %}><a href="{% url 'about' %}">About</a></li>
+            <li {% if request.path == index %} class="active" {% endif %}><a href="{% url 'index' %}">Αρχική</a></li>
+            <li {% if request.path == about %} class="active" {% endif %}><a href="{% url 'about' %}">Πληροφορίες</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    {% if user.is_authenticated %}Hello, {{ user.username }}{% else %}Account{% endif %} <span class="caret"></span>
+                    {% if user.is_authenticated %}Γεια σου, {{ user.username }}{% else %}Λογαριασμός{% endif %} <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                   {% if request.user.is_authenticated %}
+
                       <li>
-                          <a href="{% url 'logout' %}">
-                              <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
+                          <a href="{% url 'profile' %}">
+                              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Λογαριασμός
                           </a>
                       </li>
                       <li>
-                          <a href="{% url 'profile' %}">
-                              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Profile
+                          <a href="{% url 'logout' %}">
+                              <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Αποσύνδεση
                           </a>
                       </li>
                            </a>
@@ -41,18 +42,18 @@
                   {% else %}
                       <li>
                         <a href="{% url 'login' %}">
-                          <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Login
+                          <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Σύνδεση
                         </a>
                       </li>
                       <li>
                         <a href="{% url 'signup' %}">
-                          <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp;SignUp
+                          <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp;Εγγραφή
                         </a>
                       </li>
                   {% endif %}
                 </ul>
             </li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </nav>
