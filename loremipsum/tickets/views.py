@@ -146,3 +146,13 @@ def EventDetailView(request, pk):
     except Event.DoesNotExist:
         raise Http404("Δεν υπάρχει τέτοια εκδήλωση")
     return render(request, template_name, context = { 'event': e })
+
+def ProviderDetailView(request, pk):
+    template_name = 'provider_detail.html'
+    try:
+        p = Provider.objects.get(pk=pk)
+        event_list = Event.objects.filter(provider=p)
+    except Provider.DoesNotExist:
+        raise Http404("Δεν υπάρχει τέτοιος διοργανωτής")
+    return render(request, template_name, context = { 'provider': p,
+                  'event_list' : event_list})
