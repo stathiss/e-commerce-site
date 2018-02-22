@@ -16,6 +16,8 @@
     
     {% else %}
 <h1> Αποτελέσματα</h1>
+<!-- username is loremipsum2018,  pass is vz0,&</:A'FQlpQ:9MhL:/@U/%%,deGgea_CrDqiHv03[s~i8b^h`#y}vKV/6lfZ -->
+ <div id="event-list-map" style="height: 180px"></div>
 <div>
 {% if event_list %}
   <input class="form-control" id="table-event-filter-input" type="text" placeholder="Φιλτράρισμα">
@@ -24,7 +26,10 @@
     <tr>
       <th>Τίτλος</th>
       <th>Ημερομηνία</th>
-      <th>Username</th>
+      <th>Πάροχος</th>
+      <th>Κόστος</th>
+      <th>Διαθεσιμότητα</th>
+      <th>Ηλ. εύρος</th>
     </tr>
   </thead>
   <tbody id="table-event">
@@ -34,14 +39,32 @@
         <a href="{{ e.get_absolute_url }}">{{ e.title }}</a>
       </td>
       <td>{{ e.event_date }}</td>
-      <td>@twitter</td>
+      <td>{{ e.provider }}</td>
+      <td>{{ e.cost }}</td>
+      <td>{{ e.availability }}/{{ e.capacity}}</td>
+      <td>{{ e.min_age }}-{{ e.max_age}}</td>
     </tr>
       {% endfor %}
 
   </tbody>
 </table>
+{% load json_filters %}
 <script>
 $(document).ready(function(){
+  var mymap = L.map('event-list-map').setView([37.9838, 23.7275], 13);
+  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.light',
+      accessToken: 'pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw'
+      }).addTo(mymap);
+  var event_list = {{ event_list | jsonify | safe }};
+    for (var e of event_list) {
+      /*console.log(e);*/
+      var marker = L.marker([e.latitude, e.longitude]).addTo(mymap);
+      var popup = marker.bindPopup("<h2><a href=\"/event/" + e.id +"\">"+ e.title + "</a></h2><strong>Κόστος</strong>" + e.cost +"<br /><strong>Ηλ. εύρος</strong>"+ e.min_age +"/"+ e.max_age +"<br/><strong>Διαθεσιμότητα</strong> "+ e.availability +"/"+ e.capacity);
+
+    }
   $("#table-event-filter-input").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("#table-event tr").filter(function() {

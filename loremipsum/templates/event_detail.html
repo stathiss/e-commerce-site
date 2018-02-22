@@ -12,6 +12,7 @@
   <p><strong>Τοποθεσία</strong> {{ event.location }}</p>
   <p><strong>Διοργανωτής</strong> <a href="{{ event.provider.get_absolute_url }}">{{ event.provider.full_name }}</a></p>
   <p><strong>Κόστος</strong> {{ event.cost }}</p>
-  <p><strong>Ηλικιακό εύρος</strong> {{ event.min_age }} - {{ event.max_age }}</p>
+  <p><strong>Τύπος</strong> {{ event.get_event_type_display }}</p>
+  <p><strong>Ηλικιακό εύρος</strong> {{ event.get_age_range_display }}</p>
 </div>
 {% endblock %}

@@ -9,6 +9,22 @@ class User(AbstractUser):
     is_provider = models.BooleanField('provider status', default = False)
 
 class Event(models.Model):
+    AGE_RANGES = (
+            ( "0005", "0-5"),
+            ( "0609", "6-9"),
+            ( "1012", "10-12"),
+            ( "1314", "13-14"),
+            )
+    TYPES = (
+            ( "1", "Παιδικά θέατρα"),
+            ( "2", "Συναυλίες"),
+            ( "3", "Παιδότοποι"),
+            ( "4", "Πάρτυ"),
+            ( "5", "Εκπαιδευτικές εκδρομές/εκδηλώσεις"),
+            ( "6", "Αθλητικές δραστηριότητες"),
+            ( "7", "Πάρκα αναψυχής"),
+            ( "8", "Παιδικές κατασκηνώσεις"),
+            )
     title = models.TextField(max_length=256)
     event_date = models.DateTimeField('event date')
     date_added = models.DateTimeField('Date added')
@@ -17,13 +33,18 @@ class Event(models.Model):
     location = models.TextField(max_length=256)
     latitude = models.DecimalField(decimal_places=5, max_digits=7)
     longitude = models.DecimalField(decimal_places=5, max_digits=7)
-    min_age = models.IntegerField()
-    max_age = models.IntegerField()
+    age_range = models.CharField(max_length=4, choices = AGE_RANGES, default="0005")
+    event_type = models.CharField(max_length=1, choices = TYPES, default="1")
     cost = models.IntegerField()
     provider = models.ForeignKey('Provider', on_delete=models.CASCADE)
 
     def get_absolute_url(self):
         return "/event/%i" % self.id
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+            sort_keys=True)
+    def __str__(self):
+        return "%s (%s)" % (self.title, self.event_date)
 
 class Provider(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,default='')
@@ -37,6 +58,8 @@ class Provider(models.Model):
     site = models.URLField()
     def get_absolute_url(self):
         return "/provider/%i" % self.user.id
+    def __str__(self):
+        return "%s" % self.full_name
 
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,default='')
