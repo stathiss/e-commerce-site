@@ -7,10 +7,10 @@ from tickets.models import Event
 from tickets.serializers import EventSerializer
 from django.shortcuts import redirect,render
 from django.views.generic import TemplateView
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import login
 
-from tickets.forms import ParentSignUpForm, ProviderSignUpForm
+from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm
 from tickets.models import User
 
 def index(request):
@@ -59,6 +59,21 @@ class ProviderSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+        return redirect('/profile/')
+
+
+class ProviderEditView(CreateView):
+    model = User
+    form_class = ProviderEditForm
+    template_name = '../templates/registration/edit.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'provider'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save(self.request)
+        #login(self.request, user)
         return redirect('/profile/')
 
 
