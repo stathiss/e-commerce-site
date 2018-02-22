@@ -139,3 +139,10 @@ def EventListView(request):
             found_entries.append(e)
     return render_to_response(template_name,
                           { 'event_list': found_entries })
+def EventDetailView(request, pk):
+    template_name = 'event_detail.html'
+    try:
+        e = Event.objects.get(pk=pk)
+    except Event.DoesNotExist:
+        raise Http404("Δεν υπάρχει τέτοια εκδήλωση")
+    return render(request, template_name, context = { 'event': e })

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% block head_title %}{{ event.title }} {{ event.event_date }}{{ block.super }}{% endblock %}
+{% block content %}
+
+<h1> {{ event.title }} <button class="btn btn-default">Αγορά</button></h1>
+<div>
+  <p><strong>Τίτλος</strong> {{ event.title }}</p>
+  <p><strong>Ημερομηνία</strong> {{ event.event_date }}</p>
+  <p><strong>Διαθέσιμα εισιτήρια</strong> {{ event.availability }}/{{ event.capacity }}</p>
+  <p><strong>Τοποθεσία</strong> {{ event.location }}</p>
+  <p><strong>Διοργανωτής</strong> <a href="{{ event.provider.get_absolute_url }}">{{ event.provider.full_name }}</a></p>
+  <p><strong>Κόστος</strong> {{ event.cost }}</p>
+  <p><strong>Ηλικιακό εύρος</strong> {{ event.min_age }} - {{ event.max_age }}</p>
+</div>
+{% endblock %}
