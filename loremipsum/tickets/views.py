@@ -156,3 +156,17 @@ def ProviderDetailView(request, pk):
         raise Http404("Δεν υπάρχει τέτοιος διοργανωτής")
     return render(request, template_name, context = { 'provider': p,
                   'event_list' : event_list})
+
+def EventBuyView(request, pk):
+    template_name = 'event_buy.html'
+    try:
+        e = Event.objects.get(pk=pk)
+    except Event.DoesNotExist:
+        raise Http404("Δεν υπάρχει τέτοια εκδήλωση")
+    if request.user.is_authenticated:
+        if request.user.is_parent:
+            return render(request, template_name, context = { 'event': e })
+        else:
+            return redirect('/accounts/signup/parent')
+    else:
+        return redirect('/accounts/signup/parent')
