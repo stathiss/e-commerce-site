@@ -41,3 +41,4 @@ local_settings.py
 
 .env
 db.sqlite3
+loremipsum/tickets/migrations/*auto*py
