@@ -45,7 +45,7 @@ class ParentSignUpView(CreateView):
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(self.request.POST.get("lat", ""), self.request.POST.get("lng", ""))
         login(self.request, user)
         return redirect('/profile/')
 

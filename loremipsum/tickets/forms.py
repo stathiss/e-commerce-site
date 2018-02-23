@@ -8,29 +8,30 @@ from tickets.validators import *
 
 
 class ParentSignUpForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, label='Όνομα')
+    last_name = forms.CharField(max_length=30, label='Επώνυμο')
+    address = forms.CharField(max_length=30, label='Διεύθυνση')
+    email = MyEmailField(max_length=30, help_text='example@example.com', label='Email')
+    lat = forms.CharField(widget=forms.HiddenInput())
+    lon = forms.CharField(widget=forms.HiddenInput())
 
-	first_name = forms.CharField(max_length=30, label='Όνομα')
-	last_name = forms.CharField(max_length=30, label='Επώνυμο')
-	address = forms.CharField(max_length=30, label='Διεύθυνση')
-	email = MyEmailField(max_length=30, help_text='example@example.com', label='Email')
+    class Meta(UserCreationForm.Meta):
+        model = User
 
-	class Meta(UserCreationForm.Meta):
-		model = User
-
-	@transaction.atomic
-	def save(self):
-		user = super().save(commit=False)
-		user.first_name = self.cleaned_data['first_name']
-		user.last_name = self.cleaned_data['last_name']
-		user.email = self.cleaned_data['email']
-		fn = user.first_name + ' ' + user.last_name
-		#up = user.parent
-		user.address = self.cleaned_data['address']
-		user.is_parent = True
-		user.save()
-		#up.save()
-		parent = Parent.objects.create(user=user, full_name=fn, email=user.email, address=self.cleaned_data['address'])
-		return user
+    @transaction.atomic
+    def save(self, lat, lng):
+        user = super().save(commit=False)
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.email = self.cleaned_data['email']
+        fn = user.first_name + ' ' + user.last_name
+        user.latitude = self.cleaned_data['lat']
+        user.longitude = self.cleaned_data['lon']
+        user.address = self.cleaned_data['address']
+        user.is_parent = True
+        user.save()
+        parent = Parent.objects.create(user=user, latitude = user.latitude, longitude = user.longitude, full_name=fn, email=user.email, address=self.cleaned_data['address'])
+        return user
 
 class ProviderSignUpForm(UserCreationForm):
 
@@ -95,7 +96,7 @@ class ProviderEditForm(forms.ModelForm):
 		_site = self.cleaned_data['site']
 		temp = Provider.objects.get(pk=request.user)
 		provider = Provider.objects.filter(pk=request.user).update(address=(temp.address if _address == "" else _address),
-			email=(temp.email if _email == "" else _email), afm=(temp.afm if _afm == "" else _afm), doy=(temp.doy if _doy == "" else _doy), 
+			email=(temp.email if _email == "" else _email), afm=(temp.afm if _afm == "" else _afm), doy=(temp.doy if _doy == "" else _doy),
 			legal_representative=(temp.legal_representative if _lr == "" else _lr), adt=(temp.adt if _adt == "" else _adt), site=(temp.site if _site == "" else _site))
 
 		return user
@@ -150,9 +151,9 @@ class EventCreateForm(forms.ModelForm):
 		temp = Provider.objects.get(pk=request.user)
 		event.hits = 0
 		event.availability = self.cleaned_data['capacity']
-		
+
 		event = Event.objects.create(location = self.cleaned_data['location'], latitude = lat, longitude=lng, title=self.cleaned_data['title'], event_date = self.cleaned_data['event_date'], date_added = self.cleaned_data['date_added'], capacity = self.cleaned_data['capacity'], age_range = self.cleaned_data['age_range'], event_type = self.cleaned_data['event_type'], cost = self.cleaned_data['cost'], hits = 0, availability = self.cleaned_data['capacity'], provider=temp)
-		return event		
+		return event
 
 
 
