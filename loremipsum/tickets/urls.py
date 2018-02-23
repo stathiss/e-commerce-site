@@ -6,9 +6,10 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from tickets import views
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('about/', views.about, name='about'),
     path('profile/', views.profile, name='profile'),
-    path('', views.index, name='index'),
+    path('profile/edit/', views.ProviderEditView.as_view(), name='edit'),
     path('api/events/', views.event_list, name='event_list'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('api/events/<int:pk>/', views.event_detail, name='event_detail'),
@@ -19,6 +20,7 @@ urlpatterns = [
     path('event/<int:pk>', views.EventDetailView, name='event_detail'),
     path('event/<int:pk>/buy', views.EventBuyView, name='event_buy'),
     path('provider/<int:pk>', views.ProviderDetailView, name='provider_detail'),
+    path('buy_coins/', views.buy_coins.as_view(), name='buy_coins'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

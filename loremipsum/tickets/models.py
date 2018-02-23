@@ -67,6 +67,7 @@ class Parent(models.Model):
     email = models.EmailField(default='')
     full_name = models.TextField()
     address = models.TextField(default='')
+    coins = models.IntegerField(default = 0)
 
 class Review(models.Model):
     date = models.DateTimeField('review date')
