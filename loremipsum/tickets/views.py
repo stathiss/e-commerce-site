@@ -8,6 +8,7 @@ from tickets.serializers import EventSerializer
 from django.shortcuts import redirect,render
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView
 from django.contrib.auth import login
+from tickets.filters import EventFilter
 
 
 from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm
@@ -164,11 +165,12 @@ def EventListView(request):
     home_lon = 23.7275
     found_entries = []
     events = Event.objects.all()
-    for e in events:
+    event_filter = EventFilter(request.GET, queryset=events)
+    for e in event_filter.qs:
         if get_distance(home_lat, home_lon, e.latitude, e.longitude) <= 5:
             found_entries.append(e)
     return render(request, template_name,
-                          { 'event_list': found_entries })
+            { 'event_list': found_entries, 'filter': event_filter })
 def EventDetailView(request, pk):
     template_name = 'event_detail.html'
     try:

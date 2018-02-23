@@ -4,3 +4,4 @@ psycopg2
 djangorestframework
 django-allauth
 django-profiles
+django-filter
