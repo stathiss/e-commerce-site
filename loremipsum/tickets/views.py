@@ -145,6 +145,8 @@ def EventDetailView(request, pk):
         e = Event.objects.get(pk=pk)
     except Event.DoesNotExist:
         raise Http404("Δεν υπάρχει τέτοια εκδήλωση")
+
+    Event.objects.filter(pk=e.id).update(hits=(e.hits+1))
     return render(request, template_name, context = { 'event': e })
 
 def ProviderDetailView(request, pk):

@@ -37,6 +37,7 @@ class Event(models.Model):
     event_type = models.CharField(max_length=1, choices = TYPES, default="1")
     cost = models.IntegerField()
     provider = models.ForeignKey('Provider', on_delete=models.CASCADE)
+    hits = models.IntegerField()
 
     def get_absolute_url(self):
         return "/event/%i" % self.id
