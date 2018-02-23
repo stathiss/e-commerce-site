@@ -11,7 +11,7 @@ from django.contrib.auth import login
 from tickets.filters import EventFilter
 
 
-from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm
+from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm, EventCreateForm
 
 from tickets.models import User
 
@@ -61,7 +61,7 @@ class ProviderSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('/profile/')
+        return redirect('/profile/')        
 
 
 class ProviderEditView(CreateView):
@@ -75,8 +75,21 @@ class ProviderEditView(CreateView):
 
     def form_valid(self, form):
         user = form.save(self.request)
-        #login(self.request, user)
         return redirect('/profile/')
+
+class EventCreateView(CreateView):
+    model = User
+    form_class = EventCreateForm
+    template_name = '../templates/registration/add_event.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'provider'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save(self.request, self.request.POST.get("lat", ""), self.request.POST.get("lng", ""))
+        #p = Provider.objects.get(pk=self.model.provider)
+        return redirect('/events/')        
 
 class buy_coins(CreateView):
     model = User
