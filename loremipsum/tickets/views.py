@@ -174,8 +174,12 @@ def EventListView(request):
     query_string = ''
     found_entries = None
     template_name = 'event_list.html'
+    """ Athens centre coordinates : """
     home_lat = 37.983810
     home_lon = 23.7275
+    if request.user.is_authenticated and request.user.is_parent:
+        home_lat = request.user.parent.latitude
+        home_lon = request.user.parent.longitude
     found_entries = []
     events = Event.objects.all()
     event_filter = EventFilter(request.GET, queryset=events)
@@ -183,7 +187,8 @@ def EventListView(request):
         if get_distance(home_lat, home_lon, e.latitude, e.longitude) <= 5:
             found_entries.append(e)
     return render(request, template_name,
-            { 'event_list': found_entries, 'filter': event_filter })
+            { 'event_list': found_entries, 'filter': event_filter, 'location': { 'lon' : home_lon, 'lat': home_lat } })
+
 def EventDetailView(request, pk):
     template_name = 'event_detail.html'
     try:

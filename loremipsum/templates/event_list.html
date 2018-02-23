@@ -21,7 +21,7 @@
  </form>
 </div>
 {% endif %}
-<h1> Αποτελέσματα</h1>
+<h1> Αποτελέσματα σε ακτίνα 5χμ από την απόσταση σας</h1>
 <!-- username is loremipsum2018,  pass is vz0,&</:A'FQlpQ:9MhL:/@U/%%,deGgea_CrDqiHv03[s~i8b^h`#y}vKV/6lfZ -->
  <div id="event-list-map" style="height: 180px"></div>
 <div>
@@ -57,9 +57,12 @@
   </tbody>
 </table>
 {% load json_filters %}
+    {% else %}
+      0 αποτελέσματα.
+    {% endif %}  
 <script>
 $(document).ready(function(){
-  var mymap = L.map('event-list-map').setView([37.9838, 23.7275], 13);
+  var mymap = L.map('event-list-map').setView([{{ location.lat }}, {{ location.lon }}], 13);
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
       maxZoom: 18,
@@ -70,9 +73,17 @@ $(document).ready(function(){
     for (var e of event_list) {
       /*console.log(e);*/
       var marker = L.marker([e.latitude, e.longitude]).addTo(mymap);
-      var popup = marker.bindPopup("<h2><a href=\"/event/" + e.id +"\">"+ e.title + "</a></h2><strong>Κόστος</strong>" + e.cost +"<br /><strong>Ηλ. εύρος</strong>"+ e.min_age +"/"+ e.max_age +"<br/><strong>Διαθεσιμότητα</strong> "+ e.availability +"/"+ e.capacity);
+      var popup = marker.bindPopup("<h2><a href=\"/event/" + e.id +"\">"+ e.title + "</a></h2><strong>Κόστος</strong>" + e.cost +"<br /><strong>Ηλ. εύρος</strong>"+ e.age_range +"<br/><strong>Διαθεσιμότητα</strong> "+ e.availability +"/"+ e.capacity);
 
     }
+    var home_location = L.circle([{{ location.lat }}, {{ location.lon }}], { color: "#ab3659", radius: 50, fillColor: "#ab3659", fillOpacity: 0.5 }).addTo(mymap);
+    var popup = home_location.bindPopup("Η τοποθεσία σας").openPopup();
+    var coverage_circle = L.circle([{{ location.lat }}, {{ location.lon }}], {
+    color: 'green',
+    fillColor: '#bbe8b2',
+    fillOpacity: 0.4,
+    radius: 5000
+}).addTo(mymap);
   $("#table-event-filter-input").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("#table-event tr").filter(function() {
@@ -81,8 +92,5 @@ $(document).ready(function(){
   });
 });
 </script>
-    {% else %}
-      0 αποτελέσματα.
-    {% endif %}  
 </div>
 {% endblock %}

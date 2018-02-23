@@ -68,6 +68,8 @@ class Parent(models.Model):
     full_name = models.TextField()
     address = models.TextField(default='')
     coins = models.IntegerField(default = 0)
+    latitude = models.DecimalField(decimal_places=5, max_digits=7)
+    longitude = models.DecimalField(decimal_places=5, max_digits=7)
 
 class Review(models.Model):
     date = models.DateTimeField('review date')
