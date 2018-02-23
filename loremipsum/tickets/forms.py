@@ -3,8 +3,9 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashWidget
 from django.db import transaction
 import datetime
-from tickets.models import (Parent, Provider, User)
+from tickets.models import (Parent, Provider, User, Event)
 from tickets.validators import *
+
 
 class ParentSignUpForm(UserCreationForm):
 
@@ -98,6 +99,60 @@ class ProviderEditForm(forms.ModelForm):
 			legal_representative=(temp.legal_representative if _lr == "" else _lr), adt=(temp.adt if _adt == "" else _adt), site=(temp.site if _site == "" else _site))
 
 		return user
+
+class EventCreateForm(forms.ModelForm):
+
+	AGE_RANGES = (
+			( "0005", "0-5"),
+			( "0609", "6-9"),
+			( "1012", "10-12"),
+			( "1314", "13-14"),
+			)
+
+	TYPES = (
+			( "1", "Παιδικά θέατρα"),
+			( "2", "Συναυλίες"),
+			( "3", "Παιδότοποι"),
+			( "4", "Πάρτυ"),
+			( "5", "Εκπαιδευτικές εκδρομές/εκδηλώσεις"),
+			( "6", "Αθλητικές δραστηριότητες"),
+			( "7", "Πάρκα αναψυχής"),
+			( "8", "Παιδικές κατασκηνώσεις"),
+			)
+
+	title = forms.CharField(max_length=50, label='Τίτλος Εκδήλωσης', required=True)
+	event_date = forms.DateField(widget=forms.SelectDateWidget, label='Ημερομηνία Εκδήλωσης', required=True)
+	date_added = forms.DateField(widget=forms.SelectDateWidget, initial=datetime.date.today, label='Ημερομηνία Δημιουργίας Εκδήλωσης', required=True)
+	capacity = forms.IntegerField(min_value=1, label='Χωρητικότητα Εκδήλωσης', required=True)
+	location = forms.CharField(max_length=100, label='Διεύθυνση Εκδήλωσης', required=True)
+	age_range = forms.ChoiceField(choices=AGE_RANGES, initial="0005", label='Ηλικιακό Εύρος Εκδήλωσης', required=True)
+	event_type = forms.ChoiceField(choices=TYPES, initial="1", label='Είδος Εκδήλωσης', required=True)
+	cost = forms.IntegerField(min_value=0, label='Κόστος Εκδήλωσης (Σε Coins)', required=True)
+
+
+	class Meta:
+		model = User
+		fields = ['title', 'event_date', 'date_added', 'capacity', 'location', 'age_range', 'event_type', 'cost']
+
+	@transaction.atomic
+	def save(self, request, lat, lng):
+		event = super().save(commit=False)
+		event.title = self.cleaned_data['title']
+		event.event_date = self.cleaned_data['event_date']
+		event.date_added = self.cleaned_data['date_added']
+		event.capacity = self.cleaned_data['capacity']
+		event.latitude = lat
+		event.longitude = lng
+		event.location = self.cleaned_data['location']
+		event.age_range = self.cleaned_data['age_range']
+		event.event_type = self.cleaned_data['event_type']
+		event.cost = self.cleaned_data['cost']
+		temp = Provider.objects.get(pk=request.user)
+		event.hits = 0
+		event.availability = self.cleaned_data['capacity']
+		
+		event = Event.objects.create(location = self.cleaned_data['location'], latitude = lat, longitude=lng, title=self.cleaned_data['title'], event_date = self.cleaned_data['event_date'], date_added = self.cleaned_data['date_added'], capacity = self.cleaned_data['capacity'], age_range = self.cleaned_data['age_range'], event_type = self.cleaned_data['event_type'], cost = self.cleaned_data['cost'], hits = 0, availability = self.cleaned_data['capacity'], provider=temp)
+		return event		
 
 
 

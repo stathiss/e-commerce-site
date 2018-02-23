@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.admin',
     'crispy_forms',
-
     'tickets',
 ]
 
