@@ -9,9 +9,42 @@
       <form method="post" novalidate>
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
+        <input type="hidden" name="lat" id="lat" value="">
+        <input type="hidden" name="lng" id="lng" value="">
         {{ form|crispy }}
         <button type="submit" class="btn btn-success">Εγγραφή</button>
       </form>
     </div>
+    <h3>Παρακαλώ επιλέξτε στο χάρτη τον τόπο κατοικίας σας:</h3>
+    <br>
+    <div id="parent-location-map" style="height: 600px"></div>
   </div>
+  {% load json_filters %}
+<script>
+var marker;
+var popup = L.popup();
+$(document).ready(function(){
+  var mymap = L.map('parent-location-map').setView([37.9838, 23.7275], 13);
+  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.light',
+      accessToken: 'pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw'
+      }).addTo(mymap);
+  function onMapClick(e){
+    if (marker) { // check
+        mymap.removeLayer(marker); // remove
+    }
+    document.getElementById('lat').value = e.latlng.lat.toString();
+    document.getElementById('lng').value = e.latlng.lng.toString();
+    marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
+    popup
+        .setLatLng(e.latlng)
+        .setContent("Επιλέξατε τις συνεταγμένες: " + e.latlng.lat.toString() + " , " + e.latlng.lng.toString())
+        .openOn(mymap);
+  }
+  mymap.on('click', onMapClick);
+});
+</script>
+
 {% endblock %}

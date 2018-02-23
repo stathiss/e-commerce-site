@@ -18,18 +18,18 @@ class ParentSignUpForm(UserCreationForm):
 		model = User
 
 	@transaction.atomic
-	def save(self):
+	def save(self, lat, lng):
 		user = super().save(commit=False)
 		user.first_name = self.cleaned_data['first_name']
 		user.last_name = self.cleaned_data['last_name']
 		user.email = self.cleaned_data['email']
 		fn = user.first_name + ' ' + user.last_name
-		#up = user.parent
+		user.latitude = self.cleaned_data['lat']
+		user.longitude = self.cleaned_data['lng']
 		user.address = self.cleaned_data['address']
 		user.is_parent = True
 		user.save()
-		#up.save()
-		parent = Parent.objects.create(user=user, full_name=fn, email=user.email, address=self.cleaned_data['address'])
+		parent = Parent.objects.create(user=user, latitude = user.latitude, longitude = user.longitude, full_name=fn, email=user.email, address=self.cleaned_data['address'])
 		return user
 
 class ProviderSignUpForm(UserCreationForm):
