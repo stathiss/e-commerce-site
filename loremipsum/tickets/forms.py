@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashWidget
 from django.db import transaction
-
+import datetime
 from tickets.models import (Parent, Provider, User)
 from tickets.validators import *
 
@@ -100,18 +100,25 @@ class ProviderEditForm(forms.ModelForm):
 		return user
 
 
-"""
-class SignupForm(forms.Form):
-    first_name = forms.CharField(max_length=30, label='Full Name')
-    last_name = forms.CharField(max_length=30, label='Last Name')
-    address = forms.CharField(max_length=30, label='Διεύθυνση')
 
-    def signup(self, request, user):
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-       	up = user.parent
-       	up.address = self.cleaned_data['address']
-       	#up.full_name = self.cleaned_data['full_name']
-       	user.save()
-       	up.save()
-"""
+
+class BuyCoinsForm(forms.ModelForm):
+
+	card_code = forms.CharField(required = True, label='Κωδικός Κάρτας', validators=[RegexValidator(regex="^\d{16}$", message="Παρακαλώ εισάγετε έγκυρο Kωδικό Κάρτας (16 ψηφία)")])
+	card_day = forms.DateField(help_text = 'Η "μερα" δεν έχει σημασία', required = True, label = "Μήνας Λήξης", initial=datetime.date.today)
+	card_cvv = forms.CharField(required = True, label = "CVV",  validators=[RegexValidator(regex="^\d{3}$", message="Παρακαλώ εισάγετε έγκυρο Kωδικό Κάρτας (3 ψηφία)")] )
+	coins = forms.IntegerField(required = True, label="coins")
+
+	class Meta(UserCreationForm.Meta):
+		model = User
+		fields = {}
+
+	@transaction.atomic
+	def save(self, request):
+		user = super().save(commit=False)
+		coins2 = self.cleaned_data['coins'] + Parent.objects.get(pk=request.user).coins
+		parent = Parent.objects.filter(pk=request.user).update(coins = coins2)
+		return user
+
+
+

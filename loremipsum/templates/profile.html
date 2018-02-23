@@ -29,11 +29,17 @@
 		                        <td><a href="mailto:">{{user.parent.email}}</a></td>
 		                     </tr>
 		                     <tr>
+		                        <td>Υπολοιπόμενα Coins</td>
+		                        <td> {{user.parent.coins}} </td>
+		                      </tr>
+		                     <tr>
 		                        <td>Ημερομηνία Εγγραφής</td>
 		                        <td> {{user.date_joined}} </td>
 		                      </tr>
+
 		                    </tbody>
 		                  </table>
+		                  <a href="{% url 'buy_coins' %}" class="btn btn-primary">Αγορά Coins</a>
 		                </div>
 		              </div>
 		            </div>

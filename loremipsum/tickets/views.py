@@ -10,7 +10,7 @@ from django.views.generic import TemplateView
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import login
 
-from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm
+from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm,BuyCoinsForm
 from tickets.models import User
 
 def index(request):
@@ -69,6 +69,20 @@ class ProviderEditView(CreateView):
 
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'provider'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save(self.request)
+        #login(self.request, user)
+        return redirect('/profile/')
+
+class buy_coins(CreateView):
+    model = User
+    form_class = BuyCoinsForm
+    template_name = 'buy_coins.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'parent'
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
