@@ -81,3 +81,8 @@ class Tag(models.Model):
 class TagEventAssociation(models.Model):
     event = models.ForeignKey('Event', on_delete = models.CASCADE)
     tag = models.ForeignKey('Tag', on_delete = models.CASCADE)
+
+class Transaction(models.Model):
+    event = models.ForeignKey('Event', on_delete = models.CASCADE)
+    parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
+    date = models.DateTimeField("Purchase date")
