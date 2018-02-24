@@ -1,20 +1,25 @@
+
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
 
-{% if user.is_authenticated %}
-    {% if user.is_parent %}
-        {% block styles %}
+
+{% block styles %}
+    {% if user.is_authenticated %}
+        {% if user.is_parent %}
             <style>
                 .jumbotron {
-	           text-align: center;
+               text-align: center;
                 }
             </style>
+        {% endif %}
+    {% endif %}
+{% endblock %}
 
-        {% endblock %}
 
-
-        {% block jumbotron %}
+{% block jumbotron %}
+    {% if user.is_authenticated %}
+        {% if user.is_parent %}
             <div class="jumbotron">
                 <h1>Αντιστοίχηση Euro-Coins </h1>
                 <p> 5€ ---> 750 (Coins) </p>
@@ -22,18 +27,21 @@
                 <p> 20€ ---> 3000 + 75 (Coins) </p>
                 <p> 50€ ---> 7500 + 150 (Coins) </p>
             </div>
-        {% endblock %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
         
-        {% block content %}
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.is_parent %}
             <h1> Αγορά Coins </h1>
             <div class="col-lg-4 col-md-6 col-sm-8 col-12">
-	           <form role="form" action="" method="post">
-    	           {% csrf_token %}
-    	           {{ form|crispy }}
-    	           <button type="submit"> Αγορά </button>
-	           </form>
+               <form role="form" action="" method="post">
+                   {% csrf_token %}
+                   {{ form|crispy }}
+                   <button type="submit"> Αγορά </button>
+               </form>
             </div>
-        {% endblock %}
-
+        {% endif %}
     {% endif %}
-{% endif %}
+    {% endblock %}

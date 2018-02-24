@@ -6,10 +6,10 @@
   <div class="row">
     <div class="col-md-8 col-sm-10 col-12">
       <h2>Εγγραφή σαν {{ user_type }}</h2>
-      <form method="post" novalidate>
+      <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-success">Εγγραφή</button>
+        <button type="submit" id="submit" title="Παρακαλώ επιλέξτε τοποθεσία στο χάρτη" class="btn btn-success">Εγγραφή</button>
       </form>
     </div>
   {% if user_type == 'parent' %}
@@ -22,6 +22,10 @@
 <script>
 var marker;
 var popup = L.popup();
+{% if user_type == 'parent' %}
+document.getElementById('submit').disabled = 1;
+{% endif %}
+
 $(document).ready(function(){
   var mymap = L.map('parent-location-map').setView([37.9838, 23.7275], 13);
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw', {
@@ -34,6 +38,9 @@ $(document).ready(function(){
     if (marker) { // check
         mymap.removeLayer(marker); // remove
     }
+    {% if user_type == 'parent' %}
+    document.getElementById('submit').disabled = 0;
+    {% endif %}
     document.getElementById('id_lat').value = e.latlng.lat.toString();
     document.getElementById('id_lon').value = e.latlng.lng.toString();
     marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);

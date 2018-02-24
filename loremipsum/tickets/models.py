@@ -1,5 +1,6 @@
 from django.db import models
 from django import forms
+from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import AbstractUser
 from django.utils.html import escape, mark_safe
@@ -57,6 +58,7 @@ class Provider(models.Model):
     legal_representative = models.TextField()
     adt = models.TextField()
     site = models.URLField()
+    logo = models.ImageField()
     def get_absolute_url(self):
         return "/provider/%i" % self.user.id
     def __str__(self):
