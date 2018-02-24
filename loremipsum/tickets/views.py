@@ -3,15 +3,15 @@ from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from tickets.models import Event, Provider
+from tickets.models import Event, Provider, Transaction, Parent
 from tickets.serializers import EventSerializer
 from django.shortcuts import redirect,render
-from django.views.generic import TemplateView, CreateView, ListView, UpdateView
+from django.views.generic import TemplateView, CreateView, ListView, UpdateView, FormView
 from django.contrib.auth import login
 from tickets.filters import EventFilter
 
 
-from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm, EventCreateForm
+from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm, EventCreateForm, EventBuyForm
 
 from tickets.models import User
 
@@ -61,7 +61,7 @@ class ProviderSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('/profile/')        
+        return redirect('/profile/')
 
 
 class ProviderEditView(CreateView):
@@ -89,7 +89,7 @@ class EventCreateView(CreateView):
     def form_valid(self, form):
         user = form.save(self.request, self.request.POST.get("lat", ""), self.request.POST.get("lng", ""))
         #p = Provider.objects.get(pk=self.model.provider)
-        return redirect('/events/')        
+        return redirect('/events/')
 
 class buy_coins(CreateView):
     model = User
@@ -209,16 +209,45 @@ def ProviderDetailView(request, pk):
     return render(request, template_name, context = { 'provider': p,
                   'event_list' : event_list})
 
-def EventBuyView(request, pk):
+class EventBuyView(FormView):
+    form_class = EventBuyForm
     template_name = 'event_buy.html'
-    try:
-        e = Event.objects.get(pk=pk)
-    except Event.DoesNotExist:
-        raise Http404("Δεν υπάρχει τέτοια εκδήλωση")
-    if request.user.is_authenticated:
-        if request.user.is_parent:
-            return render(request, template_name, context = { 'event': e })
+    success_url = '/buy/success'
+
+    def get(self, request, **kwargs):
+        pk = self.kwargs['pk']
+        try:
+            e = Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404("Δεν υπάρχει τέτοια εκδήλωση")
+        if request.user.is_authenticated:
+            if request.user.is_parent:
+                new_balance = request.user.parent.coins - e.cost
+                return render(request, self.template_name, context = { 'event': e, 'new_balance' : new_balance, 'form': self.form_class })
+            else:
+                return redirect('/accounts/signup/parent')
         else:
             return redirect('/accounts/signup/parent')
-    else:
-        return redirect('/accounts/signup/parent')
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(**kwargs)
+    def form_valid(self, form, **kwargs):
+        pk = self.kwargs['pk']
+        e = Event.objects.get(pk=pk)
+        result = form.save(self.request, e.cost)
+        if result is None:
+            return render(self.request, 'buy_failure.html', context = { 'reason': "Δεν επαρκεί το υπόλοιπο σας για αυτήν την αγορά"})
+        elif result is False:
+            return redirect('/events')
+        else:
+            import datetime
+            amount = result/e.cost
+            if e.availability - amount < 0:
+                return render(self.request, 'buy_failure.html', context = { 'reason': "Δεν υπάρχουν αρκετά εισιτήρια για αυτή τη δραστηριότητα" })
+            new_balance = self.request.user.parent.coins - result
+            if new_balance < 0:
+                return render(self.request, 'buy_failure.html', context = { 'reason': "Δεν επαρκεί το υπόλοιπο σας για αυτήν την αγορά"})
+            Parent.objects.filter(pk=self.request.user).update(coins=new_balance)
+            Event.objects.filter(pk=pk).update(availability=(e.availability - amount))
+            t = Transaction.objects.create(event=e,parent=self.request.user.parent,date=datetime.datetime.now(),amount=amount,total_cost = result)
+
+            return render(self.request, 'buy_success.html', context = { 'transaction': t, 'new_balance' : new_balance })

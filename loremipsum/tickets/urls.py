@@ -19,7 +19,7 @@ urlpatterns = [
     path('accounts/signup/provider/', views.ProviderSignUpView.as_view(), name='provider_signup'),
     path('events/', views.EventListView, name='event_list'),
     path('event/<int:pk>', views.EventDetailView, name='event_detail'),
-    path('event/<int:pk>/buy', views.EventBuyView, name='event_buy'),
+    path('event/<int:pk>/buy', views.EventBuyView.as_view(), name='event_buy'),
     path('provider/<int:pk>', views.ProviderDetailView, name='provider_detail'),
     path('buy_coins/', views.buy_coins.as_view(), name='buy_coins'),
 ]

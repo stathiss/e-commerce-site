@@ -176,5 +176,18 @@ class BuyCoinsForm(forms.ModelForm):
 		parent = Parent.objects.filter(pk=request.user).update(coins = coins2)
 		return user
 
+class EventBuyForm(forms.Form):
+    amount = forms.IntegerField(required=True, label="Ποσότητα")
+
+    @transaction.atomic
+    def save(self, request, cost):
+        if 'buy' in request.POST:
+            amount = self.cleaned_data['amount']
+            if amount * cost > request.user.parent.coins:
+                return None
+            else:
+                return amount * cost
+        else: #User cancelled purchase
+            return False
 
 

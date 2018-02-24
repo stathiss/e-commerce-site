@@ -89,3 +89,5 @@ class Transaction(models.Model):
     event = models.ForeignKey('Event', on_delete = models.CASCADE)
     parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
     date = models.DateTimeField("Purchase date")
+    amount = models.IntegerField()
+    total_cost = models.IntegerField()

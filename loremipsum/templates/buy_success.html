@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% block head_title %}Αγορά {{ event.title }} {{ event.event_date }}{{ block.super }}{% endblock %}
+{% block content %}
+
+<h1> Επιτυχής αγορά</h1>
+<div>
+  <p>Το νέο σας υπόλοιπο μετά από την αγορά είναι {{ new_balance }} coins.</p>
+  <table>
+    <tr>
+      <td>Εκδήλωση</td>
+      <td>{{ transaction.event.title }}<td>
+    </tr>
+    <tr>
+      <td>Ημερομηνία</td>
+      <td>{{ transaction.date }}<td>
+    </tr>
+    <tr>
+      <td>Ποσότητα:</td>
+      <td>{{ transaction.amount }}<td>
+    </tr>
+    <tr>
+      <td>Συνολικό κόστος</td>
+      <td>{{ transaction.total_cost }}<td>
+    </tr>
+</div>
+{% endblock %}
