@@ -22,6 +22,44 @@ def about(request):
     return render(request, 'about.html')
 
 def profile(request):
+    if request.user.is_authenticated:
+        if request.user.is_provider:
+            """ Calculate stats for age types """
+            event_types = {}
+            events = Event.objects.filter(provider=request.user.provider)
+            counter = 0.0
+            for e in events:
+                event_type = Event.TYPES[int(e.event_type)-1][1]
+                tickets_no = (e.capacity - e.availability)
+                if event_type in event_types:
+                    event_types[event_type]["counter"] += tickets_no
+                else:
+                    event_types[event_type] = { "counter" : tickets_no, "type": event_type }
+                counter += tickets_no
+            if counter > 0:
+                for t in event_types:
+                    event_types[t]["counter"] /= counter
+                    event_types[t]["counter"] *= 100
+            """ Calculate stats for age ranges """
+            event_ranges = {}
+            counter = 0.0
+            for e in events:
+                range_ = 0 if e.age_range == "0005" else 1 if e.age_range == "0609" else 2 if e.age_range == "1012" else 3
+                event_range = Event.AGE_RANGES[range_][1]
+                tickets_no = (e.capacity - e.availability)
+                if event_range in event_ranges:
+                    event_ranges[event_range]["counter"] += tickets_no
+                else:
+                    event_ranges[event_range] = { "counter" : tickets_no, "range": event_range }
+                counter += tickets_no
+            if counter > 0:
+                for r in event_ranges:
+                    event_ranges[r]["counter"] /= counter
+                    event_ranges[r]["counter"] *= 100
+
+            return render(request, 'profile.html', context = { 'stats_types' : event_types, 'stats_ranges': event_ranges })
+
+
     return render(request, 'profile.html')
 
 class SignUpView(TemplateView):
