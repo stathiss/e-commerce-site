@@ -1,13 +1,16 @@
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from tickets.models import Event, Provider, Transaction, Parent
-from tickets.serializers import EventSerializer
 from django.shortcuts import redirect,render
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, FormView
 from django.contrib.auth import login
+from tickets.models import Event, Provider, Transaction, Parent
+from tickets.serializers import EventSerializer
 from tickets.filters import EventFilter
 from tickets.ticketgen.gen_pdf import gen_pdf_from_tx
 
@@ -98,9 +101,22 @@ class ProviderSignUpView(CreateView):
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(self.request.FILES)
         login(self.request, user)
         return redirect('/profile/')
+
+def model_form_upload(request):
+    if request.method == 'POST':
+        form = ProviderSignUpForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('/profile/')
+    else:
+        form = ProviderSignUpForm()
+    return render(request, '../templates/registration/signup_form.html', {
+        'form': form
+    })
 
 
 class ProviderEditView(CreateView):
@@ -127,8 +143,21 @@ class EventCreateView(CreateView):
 
     def form_valid(self, form):
         user = form.save(self.request, self.request.POST.get("lat", ""), self.request.POST.get("lng", ""))
-        #p = Provider.objects.get(pk=self.model.provider)
         return redirect('/events/')
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Ο κωδικός σας άλλαξε επιτυχώς!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Παρακαλώ διορθώστε το σφάλμα που εμφανίζεται παρακάτω.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, '../templates/registration/change_password.html', {'form': form})
 
 class buy_coins(CreateView):
     model = User
@@ -286,9 +315,9 @@ class EventBuyView(FormView):
                 new_balance = request.user.parent.coins - e.cost
                 return render(request, self.template_name, context = { 'event': e, 'new_balance' : new_balance, 'form': self.form_class })
             else:
-                return redirect('/accounts/signup/parent')
+                return redirect('/accounts/signup/parent/')
         else:
-            return redirect('/accounts/signup/parent')
+            return redirect('/accounts/signup/parent/')
     def get_context_data(self, **kwargs):
         return super().get_context_data(**kwargs)
     def form_valid(self, form, **kwargs):
@@ -298,7 +327,7 @@ class EventBuyView(FormView):
         if result is None:
             return render(self.request, 'buy_failure.html', context = { 'reason': "Δεν επαρκεί το υπόλοιπο σας για αυτήν την αγορά"})
         elif result is False:
-            return redirect('/events')
+            return redirect('/events/')
         else:
             import datetime
             amount = result/e.cost

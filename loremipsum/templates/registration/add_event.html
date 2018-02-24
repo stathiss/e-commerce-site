@@ -12,7 +12,7 @@
         <input type="hidden" name="lat" id="lat" value="">
         <input type="hidden" name="lng" id="lng" value="">
         {{ form|crispy }}
-        <button type="submit" class="btn btn-success">Δημιουργία Εκδήλωσης</button>
+        <button type="submit" id="submit" title="Παρακαλώ επιλέξτε τοποθεσία στο χάρτη" class="btn btn-success">Δημιουργία Εκδήλωσης</button>
       </form>
     </div>
     <h3>Παρακαλώ επιλέξτε στο χάρτη το σημείο της εκδήλωσης:</h3>
@@ -23,6 +23,7 @@
 <script>
 var marker;
 var popup = L.popup();
+document.getElementById('submit').disabled = 1;
 $(document).ready(function(){
   var mymap = L.map('event-add-map').setView([37.9838, 23.7275], 13);
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw', {
@@ -35,6 +36,7 @@ $(document).ready(function(){
     if (marker) { // check
         mymap.removeLayer(marker); // remove
     }
+    document.getElementById('submit').disabled = 0;
     document.getElementById('lat').value = e.latlng.lat.toString();
     document.getElementById('lng').value = e.latlng.lng.toString();
     marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
@@ -44,6 +46,7 @@ $(document).ready(function(){
         .openOn(mymap);
   }
   mymap.on('click', onMapClick);
+
 });
 </script>
 
