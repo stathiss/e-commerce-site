@@ -21,6 +21,13 @@
  </form>
 </div>
 {% endif %}
+<form action="" method="post" class="form-group">
+
+     {% csrf_token %}
+{{ search_form.as_p }}
+
+     <input type="submit" class="btn btn-primary" value="Ελεύθερη αναζήτηση" />
+ </form>
 <h1> Αποτελέσματα σε ακτίνα 5χμ από την απόσταση σας</h1>
 <!-- username is loremipsum2018,  pass is vz0,&</:A'FQlpQ:9MhL:/@U/%%,deGgea_CrDqiHv03[s~i8b^h`#y}vKV/6lfZ -->
  <div id="event-list-map" style="height: 180px"></div>

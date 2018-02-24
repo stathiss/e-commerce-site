@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import AbstractUser
 from django.utils.html import escape, mark_safe
+from .search import EventPostIndex
 
 class User(AbstractUser):
     is_parent = models.BooleanField('parent status', default = False)
@@ -46,6 +47,15 @@ class Event(models.Model):
             sort_keys=True)
     def __str__(self):
         return "%s (%s)" % (self.title, self.event_date)
+    def indexing(self):
+        obj = EventPostIndex(
+                meta = { 'id': self.id },
+                title = self.title,
+                date = self.event_date,
+                location = self.location,
+                )
+        obj.save()
+        return obj.to_dict(include_meta=True)
 
 class Provider(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,default='')

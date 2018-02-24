@@ -11,7 +11,7 @@ from django.contrib.auth import login
 from tickets.filters import EventFilter
 
 
-from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm, EventCreateForm, EventBuyForm
+from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm, EventCreateForm, EventBuyForm, EventsSearchForm
 
 from tickets.models import User
 
@@ -208,24 +208,46 @@ def get_distance(lat1, lon1, lat2, lon2):
 
     return R * c
 
-def EventListView(request):
-    query_string = ''
-    found_entries = None
+class EventListView(FormView):
+    form_class = EventsSearchForm
     template_name = 'event_list.html'
+
+    def get(self, request, **kwargs):
+        return event_search(request, None)
+
+    def form_valid(self, form, **kwargs):
+        token = form.save(self.request)
+        return event_search(self.request, token)
+
+
+def event_search(request, term):
     """ Athens centre coordinates : """
     home_lat = 37.983810
     home_lon = 23.7275
     if request.user.is_authenticated and request.user.is_parent:
         home_lat = request.user.parent.latitude
         home_lon = request.user.parent.longitude
+    from elasticsearch_dsl import DocType, Text, Date, Search
+
     found_entries = []
+    results = None
     events = Event.objects.all()
     event_filter = EventFilter(request.GET, queryset=events)
-    for e in event_filter.qs:
+    if term: # elastic
+        s = Search().filter('match', title=term)
+        response = s.execute(ignore_cache=True)
+        results = set()
+        response = response.to_dict()
+        for r in response['hits']['hits']:
+            results.add(Event.objects.get(pk=r['_id']))
+    else: #filter
+        results = event_filter.qs
+
+    for e in results:
         if get_distance(home_lat, home_lon, e.latitude, e.longitude) <= 5:
             found_entries.append(e)
-    return render(request, template_name,
-            { 'event_list': found_entries, 'filter': event_filter, 'location': { 'lon' : home_lon, 'lat': home_lat } })
+    return render(request, EventListView.template_name,
+            { 'event_list': found_entries, 'filter': event_filter, 'location': { 'lon' : home_lon, 'lat': home_lat}, 'search_form': EventListView.form_class })
 
 def EventDetailView(request, pk):
     template_name = 'event_detail.html'

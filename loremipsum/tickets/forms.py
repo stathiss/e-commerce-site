@@ -191,3 +191,9 @@ class EventBuyForm(forms.Form):
             return False
 
 
+class EventsSearchForm(forms.Form):
+    token = forms.CharField(required=True, label="Ελεύθερη αναζήτηση")
+
+    @transaction.atomic
+    def save(self, request):
+        return self.cleaned_data['token']
