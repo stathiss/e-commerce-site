@@ -20,6 +20,13 @@ MEDIA_ROOT = BASE_DIR
 MEDIA_URL = '/'
 
 
+# E-mail settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'lorem.ipsum.noreply@gmail.com'
+EMAIL_HOST_PASSWORD = 'loremipsum2018!'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 

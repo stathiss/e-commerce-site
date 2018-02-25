@@ -163,7 +163,8 @@ class BuyCoinsForm(forms.ModelForm):
 		(1, ("2018")),
 		(2, ("2019")),
 		(3, ("2020")),
-		(4, ("2021"))))
+		(4, ("2021")),
+		(5, ("2022"))))
 	card_month = forms.ChoiceField(required = True, label = "Μήνας Λήξης", choices = (
 		(1, ("1")),
 		(2, ("2")),
@@ -178,7 +179,7 @@ class BuyCoinsForm(forms.ModelForm):
 		(11, ("11")),
 		(12, ("12"))))	
 	card_cvv = forms.CharField(required = True, label = "CVV",  validators=[RegexValidator(regex="^\d{3}$", message="Παρακαλώ εισάγετε έγκυρο Kωδικό Κάρτας (3 ψηφία)")] )
-	coins = forms.ChoiceField(required = True, label = "Coins Αγοράς", choices = (
+	coins = forms.ChoiceField(required = True, label = "Ποσό Αγοράς σε €", choices = (
 		(1, ("5")),
 		(2, ("10")),
 		(3, ("20")),

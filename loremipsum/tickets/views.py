@@ -13,6 +13,7 @@ from tickets.models import Event, Provider, Transaction, Parent
 from tickets.serializers import EventSerializer
 from tickets.filters import EventFilter
 from tickets.ticketgen.gen_pdf import gen_pdf_from_tx
+from django.core.mail import EmailMessage
 
 
 from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm, EventCreateForm, EventBuyForm, EventsSearchForm
@@ -344,5 +345,10 @@ class EventBuyView(FormView):
             t = Transaction.objects.create(event=e,parent=self.request.user.parent,date=datetime.datetime.now(),amount=amount,total_cost = result)
             ##TODO add pdfcreate
             gen_pdf_from_tx(t)
-
+            email = EmailMessage()
+            email.subject = 'Το εισιτήριό σας - Lorem Ipsum'
+            email.body = 'Ευχαριστούμε που μας προτιμήσατε!'
+            email.to = [Parent.objects.get(pk=self.request.user).email, ]
+            email.attach_file('/code/loremipsum/tickets/ticketgen/receipt.pdf')
+            email.send()
             return render(self.request, 'buy_success.html', context = { 'transaction': t, 'new_balance' : new_balance })
