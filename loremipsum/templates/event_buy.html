@@ -6,12 +6,11 @@
 
 <h1> Αγορά ενός εισιτηρίου για την εκδήλωση {{ event.title }}? </h1>
 <div>
-  <p>Το νέο σας υπόλοιπο μετά από την αγορά θα είναι {{ new_balance }} coins. Θέλετε να συνεχίσετε;</p>
  <form role="form" action="" method="post">
      {% csrf_token %}
      {{ form|crispy }}
-    <button type="submit" class="btn btn-default" name="cancel">Ακύρωση</button>
     <button type="submit" class="btn btn-default" name="buy">Αγορά</button>
+    <button type="submit" class="btn btn-default" name="cancel">Ακύρωση</button>
   </form>
 </div>
 {% endblock %}

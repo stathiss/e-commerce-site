@@ -114,7 +114,7 @@ def model_form_upload(request):
             user = form.save()
             img_filepath = Provider.objects.get(pk=user).logo
             print("ImageFieldFile to string is " + str(img_filepath))
-            watermark(("/code/loremipsum/" + str(img_filepath)), '/code/loremipsum/tickets/watermark/watermark.png', 700, 400)
+            watermark(("/code/loremipsum/" + str(img_filepath)), '/code/loremipsum/tickets/watermark/watermark.png', 128, 128)
             login(request, user)
             return redirect('/profile/')
     else:

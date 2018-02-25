@@ -37,7 +37,7 @@ def gen_pdf_from_tx(tx):
 	c.drawImage('/code/loremipsum/tickets/ticketgen/loremipsum_lrg.jpg', 0, 0, 325, 100)
 	c.drawString(20,750,"Ευχαριστούμε που επιλέξατε τη LoremIpsum για την επιλογή των εκδηλώσεων σας!")
 	c.setFont('DroidSerifBd',14)
-	c.drawString(210,720,"Λεπτομέρειες εισητηρίου")
+	c.drawString(210,720,"Λεπτομέρειες εισιτηρίου")
 	c.setFont('DroidSerif',14)
 	c.drawString(150,670,"Όνομα εκδήλωσης: " + _event.title)
 	c.drawString(150,650,"Τοποθεσία: " + location)

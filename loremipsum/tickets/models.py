@@ -68,7 +68,7 @@ class Provider(models.Model):
     legal_representative = models.TextField()
     adt = models.TextField()
     site = models.URLField()
-    logo = models.ImageField()
+    logo = models.ImageField(upload_to='media/')
     def get_absolute_url(self):
         return "/provider/%i" % self.user.id
     def __str__(self):
