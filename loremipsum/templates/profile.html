@@ -45,6 +45,26 @@
 		                </div>
 		              </div>
 		            </div>
+
+              <h2> Ιστορικό αγορών </h2>
+              <table class="table table-condensed table-bordered">
+                <tr>
+                  <th>Τίτλος</th>
+                  <th>Ημερομηνία Αγοράς</th>
+                  <th>Διοργανωτής</th>
+                  <th>Ποσότητα</th>
+                  <th>Κόστος</th>
+                </tr>
+              {% for t in transactions %}
+              <tr>
+                <td>{{ t.event.title }}, {{ t.event.event_date }}</td>
+                <td>{{ t.date }}</td>
+                <td>{{ t.event.provider.full_name }}</td>
+                <td>{{ t.amount }}</td>
+                <td>{{ t.total_cost}}</td>
+              </tr>
+              {% endfor %}
+              </table>
 		          </div>
 		        </div>
  
