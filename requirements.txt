@@ -6,3 +6,5 @@ django-allauth
 django-profiles
 django-filter
 elasticsearch-dsl
+pillow
+reportlab
