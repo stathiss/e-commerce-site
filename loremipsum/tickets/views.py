@@ -13,6 +13,7 @@ from tickets.models import Event, Provider, Transaction, Parent
 from tickets.serializers import EventSerializer
 from tickets.filters import EventFilter
 from tickets.ticketgen.gen_pdf import gen_pdf_from_tx
+from .watermark.watermark import main as watermark
 
 
 from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm, EventCreateForm, EventBuyForm, EventsSearchForm
@@ -111,6 +112,9 @@ def model_form_upload(request):
         form = ProviderSignUpForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
+            img_filepath = Provider.objects.get(pk=user).logo
+            print("ImageFieldFile to string is " + str(img_filepath))
+            watermark(("/code/loremipsum/" + str(img_filepath)), '/code/loremipsum/tickets/watermark/watermark.png', 700, 400)
             login(request, user)
             return redirect('/profile/')
     else:
