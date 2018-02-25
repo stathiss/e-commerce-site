@@ -330,7 +330,9 @@ class EventBuyView(FormView):
             return redirect('/events/')
         else:
             import datetime
-            amount = result/e.cost
+            amount = 0
+            if e.cost > 0:
+                amount = result/e.cost
             if e.availability - amount < 0:
                 return render(self.request, 'buy_failure.html', context = { 'reason': "Δεν υπάρχουν αρκετά εισιτήρια για αυτή τη δραστηριότητα" })
             new_balance = self.request.user.parent.coins - result
