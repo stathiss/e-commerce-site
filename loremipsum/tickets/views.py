@@ -9,6 +9,7 @@ from django.shortcuts import redirect,render
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, FormView
 from django.contrib.auth import login
 from tickets.filters import EventFilter
+from tickets.ticketgen.gen_pdf import gen_pdf_from_tx
 
 
 from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm, EventCreateForm, EventBuyForm, EventsSearchForm
@@ -309,5 +310,7 @@ class EventBuyView(FormView):
             Parent.objects.filter(pk=self.request.user).update(coins=new_balance)
             Event.objects.filter(pk=pk).update(availability=(e.availability - amount))
             t = Transaction.objects.create(event=e,parent=self.request.user.parent,date=datetime.datetime.now(),amount=amount,total_cost = result)
+            ##TODO add pdfcreate
+            gen_pdf_from_tx(t)
 
             return render(self.request, 'buy_success.html', context = { 'transaction': t, 'new_balance' : new_balance })
