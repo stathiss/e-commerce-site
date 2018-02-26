@@ -14,6 +14,7 @@ from tickets.serializers import EventSerializer
 from tickets.filters import EventFilter
 from tickets.ticketgen.gen_pdf import gen_pdf_from_tx
 from django.core.mail import EmailMessage
+from datetime import datetime
 from .watermark.watermark import main as watermark
 
 from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm, EventCreateForm, EventBuyForm, EventsSearchForm
@@ -25,6 +26,38 @@ def index(request):
 
 def about(request):
     return render(request, 'about.html')
+
+def stats_per_month(request):
+    if request.user.is_authenticated:
+        if request.user.is_provider:
+            stats_per_month = {}
+            events = Event.objects.filter(provider=request.user.provider)
+            for e in events:
+                transactions = Transaction.objects.filter(event=e)
+                event_name = e.title
+                for tx in transactions:
+                    tx_cost = tx.total_cost
+                    tx_amount = tx.amount
+                    tx_date = tx.date.strftime("%Y%m")
+
+                    ##Logic
+                    if tx_date in stats_per_month:
+
+                        if event_name in stats_per_month[tx_date]:
+                            stats_per_month[tx_date][event_name]["total_amount"] += tx_amount
+                            stats_per_month[tx_date][event_name]["total_cost"] += tx_cost
+
+                        else:
+                            stats_per_month[tx_date][event_name] = { "total_amount": tx_amount, "total_cost": tx_cost }
+
+                    else:
+                        stats_per_month[tx_date] = {}
+                        stats_per_month[tx_date][event_name] = { "total_amount": tx_amount, "total_cost" : tx_cost }
+
+            return render(request, 'stats_per_month.html', context = { 'stats_per_month' : stats_per_month })
+
+
+
 
 def profile(request):
     if request.user.is_authenticated:
