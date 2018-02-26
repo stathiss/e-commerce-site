@@ -30,17 +30,21 @@
             <tr>
               <th>Τίτλος</th>
               <th>Ημερομηνία</th>
-              <th>Username</th>
+              <th>Διαθεσιμότητα</th>
             </tr>
           </thead>
           <tbody id="table-event">
             {% for e in event_list %}
+            {% if e.availability == 0 %}
+            <tr class="danger">
+            {% else %}
             <tr>
+            {% endif %}
               <td>
                 <a href="{{ e.get_absolute_url }}">{{ e.title }}</a>
               </td>
               <td>{{ e.event_date }}</td>
-              <td>@twitter</td>
+              <td>{{ e.availability }}/{{ e.capacity }}</td>
             </tr>
               {% endfor %}
           </tbody>

@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -9,6 +9,9 @@ from django.shortcuts import redirect,render
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, FormView
 from django.contrib.auth import login
 from tickets.filters import EventFilter
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
 
 
 from tickets.forms import ParentSignUpForm, ProviderSignUpForm, ProviderEditForm, BuyCoinsForm, EventCreateForm, EventBuyForm
@@ -22,6 +25,41 @@ def about(request):
     return render(request, 'about.html')
 
 def profile(request):
+    if request.user.is_authenticated:
+        if request.user.is_provider:
+            """ Calculate stats for age types """
+            event_types = {}
+            events = Event.objects.filter(provider=request.user.provider)
+            counter = 0.0
+            for e in events:
+                event_type = Event.TYPES[int(e.event_type)-1][1]
+                tickets_no = (e.capacity - e.availability)
+                if event_type in event_types:
+                    event_types[event_type]["counter"] += tickets_no
+                else:
+                    event_types[event_type] = { "counter" : tickets_no, "type": event_type }
+                    counter += tickets_no
+            if counter > 0:
+                for t in event_types:
+                    event_types[t]["counter"] /= counter
+                    event_types[t]["counter"] *= 100
+            """ Calculate stats for age ranges """
+            event_ranges = {}
+            counter = 0.0
+            for e in events:
+                range_ = 0 if e.age_range == "0005" else 1 if e.age_range == "0609" else 2 if e.age_range == "1012" else 3
+                event_range = Event.AGE_RANGES[range_][1]
+                tickets_no = (e.capacity - e.availability)
+                if event_range in event_ranges:
+                    event_ranges[event_range]["counter"] += tickets_no
+                else:
+                    event_ranges[event_range] = { "counter" : tickets_no, "range": event_range }
+                counter += tickets_no
+            if counter > 0:
+                for r in event_ranges:
+                    event_ranges[r]["counter"] /= counter
+                    event_ranges[r]["counter"] *= 100
+            return render(request, 'profile.html', context = { 'stats_types' : event_types, 'stats_ranges': event_ranges })
     return render(request, 'profile.html')
 
 class SignUpView(TemplateView):
@@ -59,9 +97,20 @@ class ProviderSignUpView(CreateView):
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(self.request.FILES)
         login(self.request, user)
         return redirect('/profile/')
+
+    def model_form_upload(request):
+        if request.method == 'POST':
+            form = ProviderSignUpForm(request.POST, request.FILES)
+            if form.is_valid():
+                user = form.save()
+                login(request, user)
+                return redirect('/profile/')
+        else:
+            form = ProviderSignUpForm()
+        return render(request, '../templates/registration/signup_form.html', { 'form': form })
 
 
 class ProviderEditView(CreateView):
@@ -88,8 +137,21 @@ class EventCreateView(CreateView):
 
     def form_valid(self, form):
         user = form.save(self.request, self.request.POST.get("lat", ""), self.request.POST.get("lng", ""))
-        #p = Provider.objects.get(pk=self.model.provider)
         return redirect('/events/')
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Ο κωδικός σας άλλαξε επιτυχώς!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Παρακαλώ διορθώστε το σφάλμα που εμφανίζεται παρακάτω.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, '../templates/registration/change_password.html', {'form': form})
 
 class buy_coins(CreateView):
     model = User

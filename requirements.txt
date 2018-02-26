@@ -5,3 +5,4 @@ djangorestframework
 django-allauth
 django-profiles
 django-filter
+Pillow

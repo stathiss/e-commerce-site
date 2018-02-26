@@ -66,6 +66,9 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
+            <p>
+              <a href="{{ user.provider.get_absolute_url }}" class="btn btn-default">Δημόσιο προφίλ</a>
+            </p>
             <div class="panel panel-info">
               <div class="panel-heading">
                 <center><h4 class="panel-title"> {{user.provider.full_name}} </h4></center><br>
@@ -108,43 +111,76 @@
                           <td>Ημερομηνία Εγγραφής</td>
                           <td> {{user.date_joined}} </td>
                         </tr>
-                      </tbody>
-                    </table>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12 text-center">
+                    <br><br><h5 class="text-center">Στατιστικά:</h5>
                   </div>
+                  <table class="table table-user-information">
+                    <tr>
+                      <th>Κατηγορία εκδήλωσης</th>
+                      <th>Ποσοστό αγορών</th>
+                    </tr>
+                    {% for e, v in stats_types.items %}
+                    <tr>
+                      <td>{{ v.type }}</td>
+                      <td>{{ v.counter }}%</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+
+                <div class="row"><br>
+                  <table class="table table-user-information">
+                    <tr>
+                      <th>Ηλικιακό εύρος</th>
+                      <th>Ποσοστό αγορών</th>
+                    </tr>
+                    {% for e, v in stats_ranges.items %}
+                    <tr>
+                      <td>{{ v.range }}</td>
+                      <td>{{ v.counter }}%</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="row"><br>
-          <div class="col-lg-12 text-center"><br>
-            <a class="text-center btn btn-primary btn-md" href="{% url 'edit' %}">Επεξεργασία Στοιχείων</a>
-            <a class="text-center btn btn-primary btn-md" href="{% url 'add_event' %}">Δημιουργία Εκδήλωσης</a>
-          </div>
+      </div>
+      <div class="row"><br>
+        <div class="col-lg-12 text-center"><br>
+          <a class="text-center btn btn-primary btn-md" href="{% url 'edit' %}">Επεξεργασία Στοιχείων</a>
+          <a class="text-center btn btn-primary btn-md" href="{% url 'add_event' %}">Δημιουργία Εκδήλωσης</a>
         </div>
       </div>
-    </section>
-    {% else %}
-      <h2>You are not authorized to enter here, please Sign Up or Log In if you have an account!</h2>
-    {% endif %}
+    </div>
+  </section>
+  {% else %}
+    <h2>You are not authorized to enter here, please Sign Up or Log In if you have an account!</h2>
   {% endif %}
-  <footer>
-  	<div class="container">
-  		<div class="row">
-  			<div class="col-md-4">
-  				<span class="copyright">Copyright © Lorem Ipsum 2018</span>
-  			</div>
-  			<div class="col-md-4">
-  				<ul class="list-inline social-buttons">
-  					<li class="list-inline-item">
-  						<a href="https://github.com/epilys/lorem-ipsum">
-  							<i class="fa fa-github"></i>
-  						</a>
-  					</li>
-  				</ul>
-  			</div>
-  			<div class="col-md-4"></div>
-  		</div>
-  	</div>
-  </footer>
+{% endif %}
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<span class="copyright">Copyright © Lorem Ipsum 2018</span>
+			</div>
+			<div class="col-md-4">
+				<ul class="list-inline social-buttons">
+					<li class="list-inline-item">
+						<a href="https://github.com/epilys/lorem-ipsum">
+							<i class="fa fa-github"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+	</div>
+</footer>
 {% endblock %}

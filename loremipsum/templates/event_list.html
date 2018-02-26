@@ -65,16 +65,26 @@
           </thead>
           <tbody id="table-event">
             {% for e in event_list %}
+            {% if e.availability == 0 %}
+            <tr class="danger">
+            {% else %}
             <tr>
+            {% endif %}
+              {% if e.availability != 0 %}
               <td>
                 <a href="{{ e.get_absolute_url }}">{{ e.title }}</a>
               </td>
+              {% else %}
+              <td>
+                <a>{{ e.title }}</a>
+              </td>
+              {% endif %}
               <td>{{ e.event_date }}</td>
               <td>{{ e.provider }}</td>
               <td>{{ e.cost }}</td>
               <td>{{ e.availability }}/{{ e.capacity}}</td>
               <td>{{ e.get_age_range_display }}</td>
-              <td><a href="{{ e.get_absolute_url }}/buy" class="btn btn-default">Αγορά</a></td>
+              <td><form action="{{ e.get_absolute_url }}/buy"><button class="btn btn-default" type="submit" {% if e.availability == 0 %}disabled{% endif%}>Αγορά</button></form></td>
             </tr>
             {% endfor %}
           </tbody>
