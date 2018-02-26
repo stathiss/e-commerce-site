@@ -14,6 +14,7 @@ urlpatterns = [
     path('profile/edit/', views.ProviderEditView.as_view(), name='edit'),
     path('profile/change_password/', views.change_password, name='change_password'),
     path('profile/add_event/', views.EventCreateView.as_view(), name='add_event'),
+    path('profile/stats/', views.stats_per_month, name='stats_per_month'),
     path('api/events/', views.event_list, name='event_list'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('api/events/<int:pk>/', views.event_detail, name='event_detail'),

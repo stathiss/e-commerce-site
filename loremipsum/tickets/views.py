@@ -36,7 +36,7 @@ def stats_per_month(request):
                 transactions = Transaction.objects.filter(event=e)
                 event_name = e.title
                 for tx in transactions:
-                    tx_cost = tx.total_cost
+                    tx_cost = tx.total_cost/150
                     tx_amount = tx.amount
                     tx_date = tx.date.strftime("%Y%m")
 

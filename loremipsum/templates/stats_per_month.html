@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ 
+{% if user.is_authenticated %}
+    
+    {% if user.is_provider %}
+
+		<div class="row">
+           	<p> 
+           	<h3>Μηνιαία Στατιστικά:</h3>
+           	</p>
+           	<br>
+           	{% for month, event_dict in stats_per_month.items %}
+           		<h4 id="monyear"></h4>
+           		<script>
+           			var year = String({{ month }}).substr(0,4);
+           			var mon = String({{ month }}).substr(4,2);
+           			document.getElementById("monyear").id = String({{ month }});
+           			document.getElementById({{ month }}).innerHTML = mon + " - " + year;
+           		</script>
+           		<table class="table table-condensed table-bordered">
+           			<tr>
+	                 	<th>Όνομα Εκδήλωσης</th>
+	                 	<th>Πλήθος Εισιτηρίων</th>
+	                 	<th>Έσοδα Εισιτηρίων (σε €)</th>
+	                </tr>
+           			{% for event, stats in event_dict.items %}
+           			<tr>
+		                <td>{{ event }}</td>
+		                <td>{{ stats.total_amount }}</td>
+		                <td>{{ stats.total_cost }}</td>
+					</tr>
+           			{% endfor %}
+            	</table>
+            	<br>
+            {% endfor %}
+        </div>    	
+
+
+
+
+    {% else %} <h2>You are not authorized to enter here!</h2>
+
+    {% endif %}
+ 
+{% endif %}
+
+{% endblock %}
