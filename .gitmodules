@@ -1,0 +1,3 @@
+[submodule "watermark"]
+	path = loremipsum/tickets/watermark
+	url = https://github.com/xtsekas/img_watermark

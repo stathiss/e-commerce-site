@@ -31,7 +31,7 @@
           <input type="hidden" name="lat" id="lat" value="">
           <input type="hidden" name="lng" id="lng" value="">
           {{ form|crispy }}
-          <button type="submit" class="btn btn-success">Δημιουργία Εκδήλωσης</button>
+          <button type="submit" class="btn btn-success" id="submit" title="Παρακαλώ επιλέξτε τοποθεσία στο χάρτη">Δημιουργία Εκδήλωσης</button>
         </form>
       </div>
       <div class="col-lg-4 text-center"></div>
@@ -46,9 +46,11 @@
 <section/>
 
 {% load json_filters %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script>
 var marker;
 var popup = L.popup();
+document.getElementById('submit').disabled = 1;
 $(document).ready(function(){
   var mymap = L.map('event-add-map').setView([37.9838, 23.7275], 13);
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw', {
@@ -61,6 +63,7 @@ $(document).ready(function(){
     if (marker) { // check
         mymap.removeLayer(marker); // remove
     }
+    document.getElementById('submit').disabled = 0;
     document.getElementById('lat').value = e.latlng.lat.toString();
     document.getElementById('lng').value = e.latlng.lng.toString();
     marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
@@ -73,23 +76,4 @@ $(document).ready(function(){
 });
 </script>
 
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <span class="copyright">Copyright © Lorem Ipsum 2018</span>
-      </div>
-      <div class="col-md-4">
-        <ul class="list-inline social-buttons">
-          <li class="list-inline-item">
-            <a href="https://github.com/epilys/lorem-ipsum">
-              <i class="fa fa-github"></i>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="col-md-4"></div>
-    </div>
-  </div>
-</footer>
 {% endblock %}

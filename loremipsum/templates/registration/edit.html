@@ -24,7 +24,7 @@
     <div class="row">
       <div class="col-lg-4 text-center"></div>
       <div class="col-lg-4 text-center">
-        <h4> Επιλέξτε τα στοιχεία που θέλετε να αλλάξετε: </h4><br>
+        <h4> Επιλέξτε τα στοιχεία του {{ user_type }} που θέλετε να αλλάξετε: </h4>
         <form method="post" novalidate>
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ next }}">

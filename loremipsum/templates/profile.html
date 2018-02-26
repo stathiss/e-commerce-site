@@ -11,6 +11,7 @@
         <h3>Καλωσήρθες, {{user.username}}</h3><br>
       </div>
     </header>
+
     <section class="bg-light">
       <div class="container">
         <div class="row">
@@ -48,12 +49,41 @@
         </div>
         <div class="row"><br>
           <div class="col-lg-12 text-center">
-            <a class="text-center btn btn-primary btn-md" href="{% url 'buy_coins' %}">Αγορά Coins</a>
+            <a class="text-center btn btn-primary btn-md" href="{% url 'buy_coins' %}">Αγορά Coins</a><br><br><br>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div class="panel panel-info">
+              <div class="panel-body">
+                <div class="row">
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <th>Τίτλος</th>
+                        <th>Ημερομηνία Αγοράς</th>
+                        <th>Διοργανωτής</th>
+                        <th>Ποσότητα</th>
+                        <th>Κόστος</th>
+                      </tr>
+                    {% for t in transactions %}
+                    <tr>
+                      <td>{{ t.event.title }}, {{ t.event.event_date }}</td>
+                      <td>{{ t.date }}</td>
+                      <td>{{ t.event.provider.full_name }}</td>
+                      <td>{{ t.amount }}</td>
+                      <td>{{ t.total_cost}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
-
     {% elif user.is_provider %}
     <header class="masthead">
       <div class="container">
@@ -62,13 +92,11 @@
         <h3>Καλωσήρθες, {{user.username}}</h3><br>
       </div>
     </header>
+
     <section class="bg-light">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
-            <p>
-              <a href="{{ user.provider.get_absolute_url }}" class="btn btn-default">Δημόσιο προφίλ</a>
-            </p>
             <div class="panel panel-info">
               <div class="panel-heading">
                 <center><h4 class="panel-title"> {{user.provider.full_name}} </h4></center><br>
@@ -111,76 +139,73 @@
                           <td>Ημερομηνία Εγγραφής</td>
                           <td> {{user.date_joined}} </td>
                         </tr>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="row">
-                  <div class="col-lg-12 text-center">
-                    <br><br><h5 class="text-center">Στατιστικά:</h5>
+                      </tbody>
+                    </table>
                   </div>
-                  <table class="table table-user-information">
-                    <tr>
-                      <th>Κατηγορία εκδήλωσης</th>
-                      <th>Ποσοστό αγορών</th>
-                    </tr>
-                    {% for e, v in stats_types.items %}
-                    <tr>
-                      <td>{{ v.type }}</td>
-                      <td>{{ v.counter }}%</td>
-                    </tr>
-                    {% endfor %}
-                  </table>
-                </div>
-
-                <div class="row"><br>
-                  <table class="table table-user-information">
-                    <tr>
-                      <th>Ηλικιακό εύρος</th>
-                      <th>Ποσοστό αγορών</th>
-                    </tr>
-                    {% for e, v in stats_ranges.items %}
-                    <tr>
-                      <td>{{ v.range }}</td>
-                      <td>{{ v.counter }}%</td>
-                    </tr>
-                    {% endfor %}
-                  </table>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row"><br>
-        <div class="col-lg-12 text-center"><br>
-          <a class="text-center btn btn-primary btn-md" href="{% url 'edit' %}">Επεξεργασία Στοιχείων</a>
-          <a class="text-center btn btn-primary btn-md" href="{% url 'add_event' %}">Δημιουργία Εκδήλωσης</a>
+        <div class="row"><br>
+          <div class="col-lg-12 text-center"><br>
+            <a class="text-center btn btn-primary btn-md" href="{% url 'edit' %}">Επεξεργασία Στοιχείων</a>
+            <a class="text-center btn btn-primary btn-md" href="{% url 'add_event' %}">Δημιουργία Εκδήλωσης</a>
+            <a href="{% url 'change_password' %}" class="btn btn-primary">Αλλαγή Κωδικού</a>
+          </div>
+        </div><br><br>
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div class="panel panel-info">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-12 text-center">
+                    <h5>Στατιστικά:</h5>
+                    <table class="table table-user-information">
+                      <tbody>
+                        <tr>
+                          <th>Κατηγορία εκδήλωσης</th>
+                          <th>Ποσοστό αγορών</th>
+                        </tr>
+                        {% for e, v in stats_types.items %}
+                        <tr>
+                          <td>{{ v.type }}</td>
+                          <td>{{ v.counter }}%</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    <table class="table table-user-information">
+                      <tbody>
+                        <tr>
+                          <th>Ηλικιακό εύρος</th>
+                          <th>Ποσοστό αγορών</th>
+                        </tr>
+                        {% for e, v in stats_ranges.items %}
+                        <tr>
+                          <td>{{ v.range }}</td>
+                          <td>{{ v.counter }}%</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <a href="{% url 'stats_per_month' %}" class="btn btn-primary text-center">Μηνιαία Reports</a>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-  {% else %}
-    <h2>You are not authorized to enter here, please Sign Up or Log In if you have an account!</h2>
+    </section>
+ 	{% else %}
+  <h2> You have no business here buddy. Go to the Django admin page! </h2>
   {% endif %}
+{% else %}
+<h2>You are not authorized to enter here, please Sign Up or Log In if you have an account!</h2>
 {% endif %}
-<footer>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4">
-				<span class="copyright">Copyright © Lorem Ipsum 2018</span>
-			</div>
-			<div class="col-md-4">
-				<ul class="list-inline social-buttons">
-					<li class="list-inline-item">
-						<a href="https://github.com/epilys/lorem-ipsum">
-							<i class="fa fa-github"></i>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<div class="col-md-4"></div>
-		</div>
-	</div>
-</footer>
 {% endblock %}

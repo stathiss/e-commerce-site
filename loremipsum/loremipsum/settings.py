@@ -16,7 +16,16 @@ from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA_ROOT = BASE_DIR
+MEDIA_URL = '/'
 
+
+# E-mail settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'lorem.ipsum.noreply@gmail.com'
+EMAIL_HOST_PASSWORD = 'loremipsum2018!'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -67,6 +76,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.media',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],

@@ -5,7 +5,7 @@ from django.db import transaction
 import datetime
 from tickets.models import (Parent, Provider, User, Event)
 from tickets.validators import *
-from django.contrib.admin import widgets
+from django.contrib.admin import widgets  
 
 
 class ParentSignUpForm(UserCreationForm):
@@ -45,7 +45,8 @@ class ProviderSignUpForm(UserCreationForm):
 	lr = forms.CharField(max_length=30, label='Νομικός Εκπρόσωπος')
 	adt = forms.CharField(max_length=30, label='Αριθμός Δελτίου Ταυτότητας', validators=[RegexValidator(regex="^\d{6,7}$", message="Παρακαλώ εισάγετε έγκυρο ΑΔΤ (6-7 ψηφία)")])
 	site = forms.URLField(max_length=30, required=False, label='Ιστοσελίδα', validators=[URLValidator(message="Παρακαλώ εισάγετε έγκυρη URL")])
-    logo = forms.ImageField()
+	logo = forms.ImageField()
+
 
 	class Meta(UserCreationForm.Meta):
 		model = User
@@ -60,9 +61,9 @@ class ProviderSignUpForm(UserCreationForm):
 		user.is_provider = True
 		user.save()
 		_site = self.cleaned_data['site']
-        provider = Provider.objects.create(user=user, logo=self.cleaned_data['logo'], full_name=fn, address=self.cleaned_data['address'], email= user.email,
-        afm=self.cleaned_data['afm'], doy=self.cleaned_data['doy'], legal_representative=self.cleaned_data['lr'], adt=self.cleaned_data['adt'], site=("" if _site == "" else _site))
-        return user
+		provider = Provider.objects.create(user=user, logo=self.cleaned_data['logo'], full_name=fn, address=self.cleaned_data['address'], email= user.email,
+			afm=self.cleaned_data['afm'], doy=self.cleaned_data['doy'], legal_representative=self.cleaned_data['lr'], adt=self.cleaned_data['adt'], site=("" if _site == "" else _site))
+		return user
 
 
 
@@ -119,8 +120,8 @@ class EventCreateForm(forms.ModelForm):
 
 	title = forms.CharField(max_length=50, label='Τίτλος Εκδήλωσης', required=True)
 	event_date = forms.SplitDateTimeField(help_text='Μορφή ημερομηνίας: YYYY-MM-DD, Μορφή ώρας: HH:MM:SS', label='Ημερομηνία και ώρα Εκδήλωσης', required=True)
-    date_added = forms.DateField(help_text='Μορφή ημερομηνίας: YYYY-MM-DD', initial=datetime.date.today, label='Ημερομηνία Δημιουργίας Εκδήλωσης', required=True)
-    capacity = forms.IntegerField(min_value=1, label='Χωρητικότητα Εκδήλωσης', required=True)
+	date_added = forms.DateField(help_text='Μορφή ημερομηνίας: YYYY-MM-DD', initial=datetime.date.today, label='Ημερομηνία Δημιουργίας Εκδήλωσης', required=True)
+	capacity = forms.IntegerField(min_value=1, label='Χωρητικότητα Εκδήλωσης', required=True)
 	location = forms.CharField(max_length=100, label='Διεύθυνση Εκδήλωσης', required=True)
 	age_range = forms.ChoiceField(choices=AGE_RANGES, initial="0005", label='Ηλικιακό Εύρος Εκδήλωσης', required=True)
 	event_type = forms.ChoiceField(choices=TYPES, initial="1", label='Είδος Εκδήλωσης', required=True)
@@ -154,33 +155,35 @@ class EventCreateForm(forms.ModelForm):
 
 
 
+
 class BuyCoinsForm(forms.ModelForm):
 
 	card_code = forms.CharField(required = True, label='Κωδικός Κάρτας', validators=[RegexValidator(regex="^\d{16}$", message="Παρακαλώ εισάγετε έγκυρο Kωδικό Κάρτας (16 ψηφία)")])
-    card_year = forms.ChoiceField(required = True, label = "Έτος Λήξης", choices = (
-    (1, ("2018")),
-    (2, ("2019")),
-    (3, ("2020")),
-    (4, ("2021"))))
-    card_month = forms.ChoiceField(required = True, label = "Μήνας Λήξης", choices = (
-    (1, ("1")),
-    (2, ("2")),
-    (3, ("3")),
-    (4, ("4")),
-    (5, ("5")),
-    (6, ("6")),
-    (7, ("7")),
-    (8, ("8")),
-    (9, ("9")),
-    (10, ("10")),
-    (11, ("11")),
-    (12, ("12"))))
+	card_year = forms.ChoiceField(required = True, label = "Έτος Λήξης", choices = (
+		(1, ("2018")),
+		(2, ("2019")),
+		(3, ("2020")),
+		(4, ("2021")),
+		(5, ("2022"))))
+	card_month = forms.ChoiceField(required = True, label = "Μήνας Λήξης", choices = (
+		(1, ("1")),
+		(2, ("2")),
+		(3, ("3")),
+		(4, ("4")),
+		(5, ("5")),
+		(6, ("6")),
+		(7, ("7")),
+		(8, ("8")),
+		(9, ("9")),
+		(10, ("10")),
+		(11, ("11")),
+		(12, ("12"))))	
 	card_cvv = forms.CharField(required = True, label = "CVV",  validators=[RegexValidator(regex="^\d{3}$", message="Παρακαλώ εισάγετε έγκυρο Kωδικό Κάρτας (3 ψηφία)")] )
-	coins = forms.ChoiceField(required = True, label = "Coins Αγοράς", choices = (
-    (1, ("5")),
-    (2, ("10")),
-    (3, ("20")),
-    (4, ("50"))))
+	coins = forms.ChoiceField(required = True, label = "Ποσό Αγοράς σε €", choices = (
+		(1, ("5")),
+		(2, ("10")),
+		(3, ("20")),
+		(4, ("50"))))
 
 	class Meta(UserCreationForm.Meta):
 		model = User
@@ -189,18 +192,18 @@ class BuyCoinsForm(forms.ModelForm):
 	@transaction.atomic
 	def save(self, request):
 		user = super().save(commit=False)
-        print (self.cleaned_data['coins'])
-        coins1 = self.cleaned_data['coins']
-        print (coins1)
-        if coins1 == "1":
-            coins2 = 750
-        elif coins1 == "2":
-            coins2 = 1500
-        elif coins1 == "3":
-            coins2 = 3075
-        else:
-            coins2 = 7650
-        coins2 += Parent.objects.get(pk=request.user).coins
+		print (self.cleaned_data['coins'])
+		coins1 = self.cleaned_data['coins'] 
+		print (coins1)
+		if coins1 == "1":
+			coins2 = 750
+		elif coins1 == "2":
+			coins2 = 1500
+		elif coins1 == "3":
+			coins2 = 3075
+		else:
+			coins2 = 7650	
+		coins2 += Parent.objects.get(pk=request.user).coins
 		parent = Parent.objects.filter(pk=request.user).update(coins = coins2)
 		return user
 
@@ -217,3 +220,11 @@ class EventBuyForm(forms.Form):
                 return amount * cost
         else: #User cancelled purchase
             return False
+
+
+class EventsSearchForm(forms.Form):
+    token = forms.CharField(required=True, label="Ελεύθερη αναζήτηση")
+
+    @transaction.atomic
+    def save(self, request):
+        return self.cleaned_data['token']
