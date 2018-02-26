@@ -2,95 +2,143 @@
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 {% block head_title %}Καλωσήρθατε | {{ block.super }}{% endblock %}
+
+{% block styles %}
+    <style>
+        .jumbotron {
+     text-align: center;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
-
-
 {% if filter.form %}
-<div class="well">
- <form action="" method="get">
-   <div class="form-group">
-     {% csrf_token %}
-     <div class="row">
-  <div class="col-md-6">
-      {{ filter.form.as_p }}
-</div>
-  <div class="col-md-6"></div>
-     </div>
-     <input type="submit" class="btn btn-primary" value="Φιλτράρισμα" />
-   </div>
- </form>
-</div>
+<header class="masthead">
+  <div class="container">
+    <br><br>
+    <img src="../../static/images/lorem-ipsum-activities.png" width="50%" alt=""><br><br>
+    <p>Αναζήτησε Δραστηριότητες</p><br>
+  </div>
+</header>
+
+<section class="bg-light">
+  <div class="container">
+    <div class="col-lg-12 text-center">
+      <img style="text-align: center" src="../../static/images/activities.png" width="50%" alt="">
+    </div><br>
+    <div class="row">
+      <div class="col-lg-4">
+        <form action="" method="get">
+          <div class="form-group text-left">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-12">
+                {{ filter.form.as_p }}
+              </div>
+            </div>
+          </div>
+        </form>
+        <input type="submit text-center" class="btn btn-primary" value="Φιλτράρισμα"/>
+      </div>
+      <div class="col-lg-8 text-center">
+        <h4> Αποτελέσματα σε ακτίνα 5χμ από την απόσταση σας</h4><br>
+        <!-- username is loremipsum2018,  pass is vz0,&</:A'FQlpQ:9MhL:/@U/%%,deGgea_CrDqiHv03[s~i8b^h`#y}vKV/6lfZ -->
+        <div id="event-list-map" style="height: 600px"></div>
+      </div>
+    </div>
+    <br><br><div class="row">
+      <div class="col-lg-12 text-center">
+        {% if event_list %}
+        <input class="form-control" id="table-event-filter-input" type="text" placeholder="Φιλτράρισμα">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Τίτλος</th>
+              <th>Ημερομηνία</th>
+              <th>Πάροχος</th>
+              <th>Κόστος</th>
+              <th>Διαθεσιμότητα</th>
+              <th>Ηλ. εύρος</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="table-event">
+            {% for e in event_list %}
+            <tr>
+              <td>
+                <a href="{{ e.get_absolute_url }}">{{ e.title }}</a>
+              </td>
+              <td>{{ e.event_date }}</td>
+              <td>{{ e.provider }}</td>
+              <td>{{ e.cost }}</td>
+              <td>{{ e.availability }}/{{ e.capacity}}</td>
+              <td>{{ e.get_age_range_display }}</td>
+              <td><a href="{{ e.get_absolute_url }}/buy" class="btn btn-default">Αγορά</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% load json_filters %}
+        {% else %}
+        0 αποτελέσματα.
+        {% endif %}
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function(){
+          var mymap = L.map('event-list-map').setView([{{ location.lat }}, {{ location.lon }}], 13);
+          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw', {
+              attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+              maxZoom: 18,
+              id: 'mapbox.light',
+              accessToken: 'pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw'
+              }).addTo(mymap);
+          var event_list = {{ event_list | jsonify | safe }};
+            for (var e of event_list) {
+              /*console.log(e);*/
+              var marker = L.marker([e.latitude, e.longitude]).addTo(mymap);
+              var popup = marker.bindPopup("<h2><a href=\"/event/" + e.id +"\">"+ e.title + "</a></h2><strong>Κόστος</strong>" + e.cost +"<br /><strong>Ηλ. εύρος</strong>"+ e.age_range +"<br/><strong>Διαθεσιμότητα</strong> "+ e.availability +"/"+ e.capacity);
+
+            }
+            var home_location = L.circle([{{ location.lat }}, {{ location.lon }}], { color: "#ab3659", radius: 50, fillColor: "#ab3659", fillOpacity: 0.5 }).addTo(mymap);
+            var popup = home_location.bindPopup("Η τοποθεσία σας").openPopup();
+            var coverage_circle = L.circle([{{ location.lat }}, {{ location.lon }}], {
+            color: 'green',
+            fillColor: '#bbe8b2',
+            fillOpacity: 0.4,
+            radius: 5000
+        }).addTo(mymap);
+          $("#table-event-filter-input").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#table-event tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+        </script>
+      </div>
+    </div>
+  </div>
+<section/>
 {% endif %}
-<h1> Αποτελέσματα σε ακτίνα 5χμ από την απόσταση σας</h1>
-<!-- username is loremipsum2018,  pass is vz0,&</:A'FQlpQ:9MhL:/@U/%%,deGgea_CrDqiHv03[s~i8b^h`#y}vKV/6lfZ -->
- <div id="event-list-map" style="height: 180px"></div>
-<div>
-{% if event_list %}
-  <input class="form-control" id="table-event-filter-input" type="text" placeholder="Φιλτράρισμα">
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Τίτλος</th>
-      <th>Ημερομηνία</th>
-      <th>Πάροχος</th>
-      <th>Κόστος</th>
-      <th>Διαθεσιμότητα</th>
-      <th>Ηλ. εύρος</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="table-event">
-    {% for e in event_list %}
-    <tr>
-      <td>
-        <a href="{{ e.get_absolute_url }}">{{ e.title }}</a>
-      </td>
-      <td>{{ e.event_date }}</td>
-      <td>{{ e.provider }}</td>
-      <td>{{ e.cost }}</td>
-      <td>{{ e.availability }}/{{ e.capacity}}</td>
-      <td>{{ e.get_age_range_display }}</td>
-      <td><a href="{{ e.get_absolute_url }}/buy" class="btn btn-default">Αγορά</a></td>
-    </tr>
-      {% endfor %}
 
-  </tbody>
-</table>
-{% load json_filters %}
-    {% else %}
-      0 αποτελέσματα.
-    {% endif %}  
-<script>
-$(document).ready(function(){
-  var mymap = L.map('event-list-map').setView([{{ location.lat }}, {{ location.lon }}], 13);
-  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      maxZoom: 18,
-      id: 'mapbox.light',
-      accessToken: 'pk.eyJ1IjoibG9yZW1pcHN1bTIwMTgiLCJhIjoiY2pkejE3bzBhMTNnYTJ4dGI2aTUzZXQ3NiJ9._Oc3vUq2Vn3uXqzphs-yrw'
-      }).addTo(mymap);
-  var event_list = {{ event_list | jsonify | safe }};
-    for (var e of event_list) {
-      /*console.log(e);*/
-      var marker = L.marker([e.latitude, e.longitude]).addTo(mymap);
-      var popup = marker.bindPopup("<h2><a href=\"/event/" + e.id +"\">"+ e.title + "</a></h2><strong>Κόστος</strong>" + e.cost +"<br /><strong>Ηλ. εύρος</strong>"+ e.age_range +"<br/><strong>Διαθεσιμότητα</strong> "+ e.availability +"/"+ e.capacity);
-
-    }
-    var home_location = L.circle([{{ location.lat }}, {{ location.lon }}], { color: "#ab3659", radius: 50, fillColor: "#ab3659", fillOpacity: 0.5 }).addTo(mymap);
-    var popup = home_location.bindPopup("Η τοποθεσία σας").openPopup();
-    var coverage_circle = L.circle([{{ location.lat }}, {{ location.lon }}], {
-    color: 'green',
-    fillColor: '#bbe8b2',
-    fillOpacity: 0.4,
-    radius: 5000
-}).addTo(mymap);
-  $("#table-event-filter-input").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#table-event tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
-</script>
-</div>
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <span class="copyright">Copyright © Lorem Ipsum 2018</span>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-inline social-buttons">
+          <li class="list-inline-item">
+            <a href="https://github.com/epilys/lorem-ipsum">
+              <i class="fa fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</footer>
 {% endblock %}

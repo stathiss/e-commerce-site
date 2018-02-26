@@ -1,122 +1,150 @@
 {% extends 'base.html' %}
 
 {% block content %}
- 
+
 {% if user.is_authenticated %}
     {% if user.is_parent %}
-        <h1> Καλωσήρθες, {{user.username}} </h1>
-		 
-		<div class="container">
-		      <div class="row">
-		      <br>
-		            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
-		   
-		   
-		          <div class="panel panel-info">
-		            <div class="panel-heading">
-		              <center><h3 class="panel-title"> {{user.parent.full_name}} </h3></center>
-		            </div>
-		            <div class="panel-body">
-		              <div class="row">
-		                  <table class="table table-user-information">
-		                    <tbody>
-		                      <tr>
-		                        <td>Διεύθυνση</td>
-		                        <td> {{user.parent.address}} </td>
-		                      </tr>
-		                      <tr>
-		                        <td>Email</td>
-		                        <td><a href="mailto:">{{user.parent.email}}</a></td>
-		                     </tr>
-		                     <tr>
-		                        <td>Υπολοιπόμενα Coins</td>
-		                        <td> {{user.parent.coins}} </td>
-		                      </tr>
-		                     <tr>
-		                        <td>Ημερομηνία Εγγραφής</td>
-		                        <td> {{user.date_joined}} </td>
-		                      </tr>
+    <header class="masthead">
+      <div class="container">
+        <br>
+        <img src="../../static/images/lorem-ipsum-profile.png" width="50%" alt=""><br><br>
+        <h3>Καλωσήρθες, {{user.username}}</h3><br>
+      </div>
+    </header>
+    <section class="bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <center><h4 class="panel-title"> {{user.parent.full_name}} </h4></center><br>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>Διεύθυνση</td>
+                        <td> {{user.parent.address}} </td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td><a href="mailto:">{{user.parent.email}}</a></td>
+                      </tr>
+                      <tr>
+                        <td>Υπολοιπόμενα Coins</td>
+                        <td> {{user.parent.coins}} </td>
+                      </tr>
+                      <tr>
+                        <td>Ημερομηνία Εγγραφής</td>
+                        <td> {{user.date_joined}} </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row"><br>
+          <div class="col-lg-12 text-center">
+            <a class="text-center btn btn-primary btn-md" href="{% url 'buy_coins' %}">Αγορά Coins</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-		                    </tbody>
-		                  </table>
-		                  <a href="{% url 'buy_coins' %}" class="btn btn-primary">Αγορά Coins</a>
-		                </div>
-		              </div>
-		            </div>
-		          </div>
-		        </div>
- 
- 
     {% elif user.is_provider %}
- 
-		 <div class="container">
-		      <div class="row">
-		      <br>
-		            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
-		   
-		   
-                  <a href="{{ user.provider.get_absolute_url }}">Δημόσιο προφίλ</a>
-		          <div class="panel panel-info">
-		            <div class="panel-heading">
-		              <center><h3 class="panel-title"> {{user.provider.full_name}} </h3></center>
-		            </div>
-		            <div class="panel-body">
-		              <div class="row">
-		                  <table class="table table-user-information">
-		                    <tbody>
-		                      <tr>
-		                        <td>Διεύθυνση</td>
-		                        <td> {{user.provider.address}} </td>
-		                      </tr>
-		                      <tr>
-		                        <td>Email</td>
-		                        <td><a href="mailto:">{{user.provider.email}}</a></td>
-		                     </tr>
-		                     <tr>
-		                        <td>ΑΦΜ</td>
-		                        <td> {{user.provider.afm}}</td>
-		                     </tr>
-		                     <tr>
-		                        <td>ΔΟΥ</td>
-		                        <td>{{user.provider.doy}}</td>
-		                     </tr>
-		                     <tr>
-		                        <td>Νομικός Εκπρόσωπος</td>
-		                        <td>{{user.provider.legal_representative}}</td>
-		                     </tr>
-		                     <tr>
-		                        <td>Αριθμός Δελτίου Ταυτότητας</td>
-		                        <td>{{user.provider.adt}}</td>
-		                     </tr>
-		                     {% if user.provider.site != None %}
-		                     <tr>
-		                        <td>Ιστοσελίδα</td>
-		                        <td><a href="{{user.provider.site}}">{{user.provider.site}}</td>
-		                     </tr>
-		                     {% endif %}
-		                     <tr>
-		                        <td>Ημερομηνία Εγγραφής</td>
-		                        <td> {{user.date_joined}} </td>
-		                     </tr>
-		                    </tbody>
-		                  </table>
-		                  <center>
-		                  <a href="{% url 'edit' %}" class="btn btn-primary">Επεξεργασία Στοιχείων</a>
-		                  <a href="{% url 'add_event' %}" class="btn btn-primary">Δημιουργία Εκδήλωσης</a>
-		              	  </center>
-		                </div>
-		              </div>
-		            </div>
-		          </div>
-		        </div>   
- 	
- 	{% else %}	<h2> You have no business here buddy. Go to the Django admin page! </h2>
-
+    <header class="masthead">
+      <div class="container">
+        <br>
+        <img src="../../static/images/lorem-ipsum-profile-provider.png" width="50%" alt=""><br><br>
+        <h3>Καλωσήρθες, {{user.username}}</h3><br>
+      </div>
+    </header>
+    <section class="bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <center><h4 class="panel-title"> {{user.provider.full_name}} </h4></center><br>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>Διεύθυνση</td>
+                        <td> {{user.provider.address}} </td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td><a href="mailto:">{{user.provider.email}}</a></td>
+                      </tr>
+                      <tr>
+                        <td>ΑΦΜ</td>
+                        <td> {{user.provider.afm}}</td>
+                      </tr>
+                      <tr>
+                        <td>ΔΟΥ</td>
+                        <td>{{user.provider.doy}}</td>
+                      </tr>
+                      <tr>
+                        <td>Νομικός Εκπρόσωπος</td>
+                        <td>{{user.provider.legal_representative}}</td>
+                      </tr>
+                      <tr>
+                        <td>Αριθμός Δελτίου Ταυτότητας</td>
+                        <td>{{user.provider.adt}}</td>
+                      </tr>
+                      {% if user.provider.site != None %}
+                      <tr>
+                        <td>Ιστοσελίδα</td>
+                        <td><a href="{{user.provider.site}}">{{user.provider.site}}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                          <td>Ημερομηνία Εγγραφής</td>
+                          <td> {{user.date_joined}} </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row"><br>
+          <div class="col-lg-12 text-center"><br>
+            <a class="text-center btn btn-primary btn-md" href="{% url 'edit' %}">Επεξεργασία Στοιχείων</a>
+            <a class="text-center btn btn-primary btn-md" href="{% url 'add_event' %}">Δημιουργία Εκδήλωσης</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% else %}
+      <h2>You are not authorized to enter here, please Sign Up or Log In if you have an account!</h2>
     {% endif %}
- 
- 
-{% else %} <h2>You are not authorized to enter here, please Sign Up or Log In if you have an account!</h2>
- 
-{% endif %}
-
+  {% endif %}
+  <footer>
+  	<div class="container">
+  		<div class="row">
+  			<div class="col-md-4">
+  				<span class="copyright">Copyright © Lorem Ipsum 2018</span>
+  			</div>
+  			<div class="col-md-4">
+  				<ul class="list-inline social-buttons">
+  					<li class="list-inline-item">
+  						<a href="https://github.com/epilys/lorem-ipsum">
+  							<i class="fa fa-github"></i>
+  						</a>
+  					</li>
+  				</ul>
+  			</div>
+  			<div class="col-md-4"></div>
+  		</div>
+  	</div>
+  </footer>
 {% endblock %}

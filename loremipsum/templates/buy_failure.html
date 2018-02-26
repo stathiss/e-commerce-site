@@ -3,9 +3,48 @@
 {% load staticfiles %}
 {% block head_title %}Αγορά {{ event.title }} {{ event.event_date }}{{ block.super }}{% endblock %}
 {% block content %}
+<header class="masthead">
+  <div class="container">
+    <br><br>
+    <img src="../../static/images/lorem-ipsum-failure.png" width="50%" alt=""><br><br>
+    <p> OOPS... </p><br>
+  </div>
+</header>
 
-<h1> Ανεπιτυχής αγορά</h1>
-<div>
-  <p>{{ reason }}</p>
-</div>
+<section class="bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h3> Ανεπιτυχής αγορά...</h3>
+        <div>
+          <p>{{ reason }}</p>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <a class="text-center btn btn-primary btn-md" href="{% url 'buy_coins' %}">Αγορά Coins</a>
+            <a class="text-center btn btn-primary btn-md" href="/events">Επιστροφή</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <span class="copyright">Copyright © Lorem Ipsum 2018</span>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-inline social-buttons">
+          <li class="list-inline-item">
+            <a href="https://github.com/epilys/lorem-ipsum">
+              <i class="fa fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</footer>
 {% endblock %}

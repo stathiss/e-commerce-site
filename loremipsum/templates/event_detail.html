@@ -3,16 +3,57 @@
 {% load staticfiles %}
 {% block head_title %}{{ event.title }} {{ event.event_date }}{{ block.super }}{% endblock %}
 {% block content %}
+<header class="masthead">
+  <div class="container">
+    <br><br>
+    <img src="../../static/images/lorem-ipsum-rocket.png" width="50%" alt=""><br><br>
+    <p> {{ event.title }} - {{ event.event_date}} </p><br>
+  </div>
+</header>
 
-<h1> {{ event.title }} <a href="{{ event.get_absolute_url }}/buy" class="btn btn-default">Αγορά</a></h1>
-<div>
-  <p><strong>Τίτλος</strong> {{ event.title }}</p>
-  <p><strong>Ημερομηνία</strong> {{ event.event_date }}</p>
-  <p><strong>Διαθέσιμα εισιτήρια</strong> {{ event.availability }}/{{ event.capacity }}</p>
-  <p><strong>Τοποθεσία</strong> {{ event.location }}</p>
-  <p><strong>Διοργανωτής</strong> <a href="{{ event.provider.get_absolute_url }}">{{ event.provider.full_name }}</a></p>
-  <p><strong>Κόστος</strong> {{ event.cost }}</p>
-  <p><strong>Τύπος</strong> {{ event.get_event_type_display }}</p>
-  <p><strong>Ηλικιακό εύρος</strong> {{ event.get_age_range_display }}</p>
-</div>
+<section class="bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4 text-left">
+        <h4 class="text-center text-uppercase"> {{ event.title }} </h4><br>
+        <div>
+          <p><strong>Τίτλος</strong> {{ event.title }}</p>
+          <p><strong>Ημερομηνία</strong> {{ event.event_date }}</p>
+          <p><strong>Διαθέσιμα εισιτήρια</strong> {{ event.availability }}/{{ event.capacity }}</p>
+          <p><strong>Τοποθεσία</strong> {{ event.location }}</p>
+          <p><strong>Διοργανωτής</strong> <a href="{{ event.provider.get_absolute_url }}">{{ event.provider.full_name }}</a></p>
+          <p><strong>Κόστος</strong> {{ event.cost }}</p>
+          <p><strong>Τύπος</strong> {{ event.get_event_type_display }}</p>
+          <p><strong>Ηλικιακό εύρος</strong> {{ event.get_age_range_display }}</p>
+        </div>
+        <br><div class="row">
+		      <div class="col-lg-12 text-center">
+						<a class="text-center btn btn-secondary btn-md" href="{{ event.get_absolute_url }}/buy">Αγορά</a><br>
+					</div>
+				</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <span class="copyright">Copyright © Lorem Ipsum 2018</span>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-inline social-buttons">
+          <li class="list-inline-item">
+            <a href="https://github.com/epilys/lorem-ipsum">
+              <i class="fa fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</footer>
 {% endblock %}
