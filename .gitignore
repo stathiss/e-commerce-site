@@ -42,3 +42,8 @@ local_settings.py
 .env
 db.sqlite3
 loremipsum/tickets/migrations/*auto*py
+loremipsum/media/
+loremipsum/tickets/ticketgen/
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
