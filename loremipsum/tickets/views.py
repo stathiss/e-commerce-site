@@ -96,7 +96,7 @@ def profile(request):
                     event_ranges[r]["counter"] *= 100
 
             return render(request, 'profile.html', context = { 'stats_types' : event_types, 'stats_ranges': event_ranges })
-        else:
+        elif request.user.is_parent:
             transactions = Transaction.objects.filter(parent=request.user.parent)
             return render(request, 'profile.html', context = { 'transactions' : transactions })
     return render(request, 'profile.html')
