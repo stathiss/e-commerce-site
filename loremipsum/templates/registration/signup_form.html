@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
-
 {% load crispy_forms_tags %}
-
 {% block content %}
 <head>
   {% if user.is_authenticated %}
   <script language="javascript">
-    window.location.href = "/profile"
+    window.location.href = "/profile/"
   </script>
   {% endif %}
 </head>
