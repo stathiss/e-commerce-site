@@ -43,7 +43,7 @@ def gen_pdf_from_tx(tx):
 	c.drawString(150,650,"Τοποθεσία: " + location)
 	c.drawString(150,630,"Πάροχος: " + provider)
 	c.drawString(150,610,"Όνομα γονέα: " + parent_name)
-	c.drawString(150,590,"Αριθμός εισητηρίων: " + str(int(amount)))
+	c.drawString(150,590,"Αριθμός εισιτηρίων: " + str(int(amount)))
 	c.drawString(150,570,"Κόστος σε coins: " + str(cost))
 	c.drawString(150,550,"Ημερομηνία αγοράς: " + purchase_date)
 	c.save()
