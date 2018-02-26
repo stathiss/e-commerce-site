@@ -1,47 +1,69 @@
-
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-
-
-{% block styles %}
-    {% if user.is_authenticated %}
-        {% if user.is_parent %}
+{% if user.is_authenticated %}
+    {% if user.is_parent %}
+        {% block styles %}
             <style>
                 .jumbotron {
-               text-align: center;
+	           text-align: center;
                 }
             </style>
-        {% endif %}
-    {% endif %}
-{% endblock %}
+        {% endblock %}
 
+        {% block jumbotron %}
+        <header class="masthead">
+          <div class="container">
+            <br>
+            <img src="../../static/images/lorem-ipsum-shopping-cart.png" width="50%" alt=""><br><br>
+          </div>
+        </header>
+        <div class="jumbotron">
+            <h3>Αγόρασε το ποσό που επιθυμείς</h3><br>
+            <p> 5€ = 750 Coins </p>
+            <p> 10€ = 1500 Coins </p>
+            <p> 20€ = 3000 + 75 Coins </p>
+            <p> 50€ = 7500 + 150 Coins </p>
+            <img src="../../static/images/payment.png" width="25%" alt=""><br><br>
+        </div>
+        {% endblock %}
 
-{% block jumbotron %}
-    {% if user.is_authenticated %}
-        {% if user.is_parent %}
-            <div class="jumbotron">
-                <h1>Αντιστοίχηση Euro-Coins </h1>
-                <p> 5€ ---> 750 (Coins) </p>
-                <p> 10€ ---> 1500 (Coins) </p>
-                <p> 20€ ---> 3000 + 75 (Coins) </p>
-                <p> 50€ ---> 7500 + 150 (Coins) </p>
+        {% block content %}
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-4 text-center"></div>
+            <div class="col-lg-4 text-center">
+              <h3 class="section-heading text-uppercase">Αγορα Coins</h3>
+              <h5 class="section-subheading text-muted">Συμπλήρωσε τα στοιχεία πληρωμής</h5><br>
+              <form role="form" action="" method="post">
+     	           {% csrf_token %}
+     	           {{ form|crispy }}
+     	           <button type="submit"> Αγορά </button>
+ 	           </form>
             </div>
-        {% endif %}
+            <div class="col-lg-4 text-center"></div>
+          </div>
+        </div><br>
+
+        <footer>
+        	<div class="container">
+        		<div class="row">
+        			<div class="col-md-4">
+        				<span class="copyright">Copyright © Lorem Ipsum 2018</span>
+        			</div>
+        			<div class="col-md-4">
+        				<ul class="list-inline social-buttons">
+        					<li class="list-inline-item">
+        						<a href="https://github.com/epilys/lorem-ipsum">
+        							<i class="fa fa-github"></i>
+        						</a>
+        					</li>
+        				</ul>
+        			</div>
+        			<div class="col-md-4"></div>
+        		</div>
+        	</div>
+        </footer>
+        {% endblock %}
     {% endif %}
-{% endblock %}
-        
-{% block content %}
-    {% if user.is_authenticated %}
-        {% if user.is_parent %}
-            <h1> Αγορά Coins </h1>
-            <div class="col-lg-4 col-md-6 col-sm-8 col-12">
-               <form role="form" action="" method="post">
-                   {% csrf_token %}
-                   {{ form|crispy }}
-                   <button type="submit"> Αγορά </button>
-               </form>
-            </div>
-        {% endif %}
-    {% endif %}
-    {% endblock %}
+{% endif %}

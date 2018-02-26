@@ -3,15 +3,57 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-8 col-sm-10 col-12">
-      <h2> Επιλέξτε τα στοιχεία του {{ user_type }} που θέλετε να αλλάξετε: </h2>
-      <form method="post" novalidate>
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}">
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-success"> Αλλαγή Στοιχείων </button>
-      </form>
+<head>
+  {% if user.is_parent %}
+  <script language="javascript">
+    window.location.href = "/profile"
+  </script>
+  {% endif %}
+</head>
+
+<header class="masthead">
+  <div class="container">
+    <br>
+    <img src="../../static/images/lorem-ipsum-edit.png" width="50%" alt=""><br><br>
+    <h2>Επεξεργασία Προσωπικών Στοιχείων</h2><br>
+  </div>
+</header>
+
+<section class="bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 text-center"></div>
+      <div class="col-lg-4 text-center">
+        <h4> Επιλέξτε τα στοιχεία του {{ user_type }} που θέλετε να αλλάξετε: </h4>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next }}">
+          {{ form|crispy }}
+          <button type="submit" class="btn btn-success"> Αλλαγή Στοιχείων </button>
+        </form>
+      </div>
+      <div class="col-lg-4 text-center"></div>
     </div>
   </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <span class="copyright">Copyright © Lorem Ipsum 2018</span>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-inline social-buttons">
+          <li class="list-inline-item">
+            <a href="https://github.com/epilys/lorem-ipsum">
+              <i class="fa fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</footer>
 {% endblock %}

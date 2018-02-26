@@ -9,7 +9,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('about/', views.about, name='about'),
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.ProviderEditView.as_view(), name='edit'),
     path('profile/change_password/', views.change_password, name='change_password'),
@@ -31,5 +30,3 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = format_suffix_patterns(urlpatterns)
-
-

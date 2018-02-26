@@ -1,21 +1,28 @@
 {% extends 'base.html' %}
-
 {% load crispy_forms_tags %}
 
 {% block content %}
-  {% if form.non_field_errors %}
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      {% for error in form.non_field_errors %}
-        <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
-      {% endfor %}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  {% endif %}
-  <div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-8 col-12">
-      <h2>Σύνδεση</h2>
+<header class="masthead">
+  <div class="container">
+    <br>
+    <img src="../../static/images/lorem-ipsum-logo.jpg" width="50%" alt=""><br><br>
+    <p>Login</p><br>
+  </div>
+</header><br><br>
+{% if form.non_field_errors %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {% for error in form.non_field_errors %}
+      <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+    {% endfor %}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{% endif %}
+<div class="row">
+  <div class="col-lg-4"></div>
+    <div class="col-lg-4 text-center">
+      <h2>Σύνδεση</h2><br>
       <form method="post" novalidate>
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
@@ -24,5 +31,26 @@
         <button type="submit" class="btn btn-primary">Σύνδεση</button>
       </form>
     </div>
+  <div class="col-lg-4"></div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <span class="copyright">Copyright © Lorem Ipsum 2018</span>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-inline social-buttons">
+          <li class="list-inline-item">
+            <a href="https://github.com/epilys/lorem-ipsum">
+              <i class="fa fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
   </div>
+</footer>
 {% endblock %}

@@ -3,40 +3,72 @@
 {% load staticfiles %}
 {% block head_title %}{{ provider.full_name }} {{ block.super }}{% endblock %}
 {% block content %}
+<header class="masthead">
+  <div class="container">
+    <br><br>
+    <img src="../../static/images/lorem-ipsum-profile-provider.png" width="50%" alt=""><br><br>
+    <p> {{ provider.full_name }} </p><br>
+  </div>
+</header>
 
-<h1> {{ event.full_name }}</h1>
-<div>
-  <p><strong>Logo</strong><br> <img src= "/{{provider.logo}}" ></p>
-  <p><strong>Όνομα</strong> {{ provider.full_name }}</p>
-  <p><strong>e-mail</strong> {{ provider.email }}</p>
-  <p><strong>Διεύθυνση</strong> {{ provider.address}}</p>
-  <p><strong>Ιστοσελίδα</strong> {{ provider.site }}</p>
-</div>
+<section class="bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4 text-center">
+        <p><strong>Logo</strong><br> <img src= "/{{provider.logo}}" ></p>
+        <p><strong>Όνομα</strong> {{ provider.full_name }}</p>
+        <p><strong>e-mail</strong> {{ provider.email }}</p>
+        <p><strong>Διεύθυνση</strong> {{ provider.address}}</p>
+        <p><strong>Ιστοσελίδα</strong> {{ provider.site }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <br><br><h5 class="text-center"> Δραστηριότητες από {{ provider.full_name }} </h5><br>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Τίτλος</th>
+              <th>Ημερομηνία</th>
+              <th>Διαθεσιμότητα</th>
+            </tr>
+          </thead>
+          <tbody id="table-event">
+            {% for e in event_list %}
+            {% if e.availability == 0 %}
+            <tr class="danger">
+            {% else %}
+            <tr>
+              {% endif %}
+              <td><a href="{{ e.get_absolute_url }}">{{ e.title }}</a></td>
+              <td>{{ e.event_date }}</td>
+              <td>{{ e.availability }}/{{ e.capacity }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+  </div>
+</section>
 
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Τίτλος</th>
-      <th>Ημερομηνία</th>
-      <th>Διαθεσιμότητα</th>
-    </tr>
-  </thead>
-  <tbody id="table-event">
-    {% for e in event_list %}
-      {% if e.availability == 0 %}
-    <tr class="danger">
-        {% else %}
-        <tr>
-        {% endif %}
-      <td>
-        <a href="{{ e.get_absolute_url }}">{{ e.title }}</a>
-      </td>
-      <td>{{ e.event_date }}</td>
-        <td>{{ e.availability }}/{{ e.capacity }}</td>
-    </tr>
-      {% endfor %}
-
-  </tbody>
-</table>
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <span class="copyright">Copyright © Lorem Ipsum 2018</span>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-inline social-buttons">
+          <li class="list-inline-item">
+            <a href="https://github.com/epilys/lorem-ipsum">
+              <i class="fa fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</footer>
 {% endblock %}

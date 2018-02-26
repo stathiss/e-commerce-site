@@ -5,7 +5,7 @@ from django.db import transaction
 import datetime
 from tickets.models import (Parent, Provider, User, Event)
 from tickets.validators import *
-from django.contrib.admin import widgets  
+from django.contrib.admin import widgets
 
 
 class ParentSignUpForm(UserCreationForm):
@@ -119,7 +119,7 @@ class EventCreateForm(forms.ModelForm):
 			)
 
 	title = forms.CharField(max_length=50, label='Τίτλος Εκδήλωσης', required=True)
-	event_date = forms.SplitDateTimeField(help_text='Μορφή ημερομηνίας: YYYY-MM-DD, Μορφή ώρας: HH:MM:SS', label='Ημερομηνία και ώρα Εκδήλωσης', required=True)
+	event_date = forms.SplitDateTimeField(help_text='\n Μορφή ημερομηνίας: YYYY-MM-DD, Μορφή ώρας: HH:MM:SS', label='Ημερομηνία και ώρα Εκδήλωσης', required=True)
 	date_added = forms.DateField(help_text='Μορφή ημερομηνίας: YYYY-MM-DD', initial=datetime.date.today, label='Ημερομηνία Δημιουργίας Εκδήλωσης', required=True)
 	capacity = forms.IntegerField(min_value=1, label='Χωρητικότητα Εκδήλωσης', required=True)
 	location = forms.CharField(max_length=100, label='Διεύθυνση Εκδήλωσης', required=True)
@@ -177,7 +177,7 @@ class BuyCoinsForm(forms.ModelForm):
 		(9, ("9")),
 		(10, ("10")),
 		(11, ("11")),
-		(12, ("12"))))	
+		(12, ("12"))))
 	card_cvv = forms.CharField(required = True, label = "CVV",  validators=[RegexValidator(regex="^\d{3}$", message="Παρακαλώ εισάγετε έγκυρο Kωδικό Κάρτας (3 ψηφία)")] )
 	coins = forms.ChoiceField(required = True, label = "Ποσό Αγοράς σε €", choices = (
 		(1, ("5")),
@@ -193,7 +193,7 @@ class BuyCoinsForm(forms.ModelForm):
 	def save(self, request):
 		user = super().save(commit=False)
 		print (self.cleaned_data['coins'])
-		coins1 = self.cleaned_data['coins'] 
+		coins1 = self.cleaned_data['coins']
 		print (coins1)
 		if coins1 == "1":
 			coins2 = 750
@@ -202,7 +202,7 @@ class BuyCoinsForm(forms.ModelForm):
 		elif coins1 == "3":
 			coins2 = 3075
 		else:
-			coins2 = 7650	
+			coins2 = 7650
 		coins2 += Parent.objects.get(pk=request.user).coins
 		parent = Parent.objects.filter(pk=request.user).update(coins = coins2)
 		return user

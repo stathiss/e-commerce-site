@@ -4,13 +4,55 @@
 {% block head_title %}Αγορά {{ event.title }} {{ event.event_date }}{{ block.super }}{% endblock %}
 {% block content %}
 
-<h1> Αγορά ενός εισιτηρίου για την εκδήλωση {{ event.title }}? </h1>
-<div>
- <form role="form" action="" method="post">
-     {% csrf_token %}
-     {{ form|crispy }}
-    <button type="submit" class="btn btn-default" name="buy">Αγορά</button>
-    <button type="submit" class="btn btn-default" name="cancel">Ακύρωση</button>
-  </form>
-</div>
+<header class="masthead">
+  <div class="container">
+    <br><br>
+    <img src="../../static/images/lorem-ipsum-business.png" width="50%" alt=""><br><br>
+    <p> {{ event.title }} - {{ event.event_date}} </p><br>
+  </div>
+</header>
+
+<section class="bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4 text-left">
+        <h4 class="text-center">Αγορά ενός εισιτηρίου για την εκδήλωση {{ event.title }}? </h4><br>
+        <div>
+          <p>Το νέο σας υπόλοιπο μετά από την αγορά θα είναι <b>{{ new_balance }}</b> coins. Θέλετε να συνεχίσετε;</p>
+          <form role="form" action="" method="post">
+             {% csrf_token %}
+             {{ form|crispy }}
+             <div class="row"><br>
+               <div class="col-lg-12 text-center"><br>
+                 <button type="submit" class="text-center btn btn-primary btn-md" name="buy">Αγορά</button>
+                 <button type="submit" class="text-center btn btn-primary btn-md" name="cancel">Ακύρωση</button>
+               </div>
+             </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>~
+</section>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <span class="copyright">Copyright © Lorem Ipsum 2018</span>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-inline social-buttons">
+          <li class="list-inline-item">
+            <a href="https://github.com/epilys/lorem-ipsum">
+              <i class="fa fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</footer>
 {% endblock %}

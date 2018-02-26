@@ -5,17 +5,222 @@
 	text-align: center;
 }
 </style>
-
 {% endblock %}
 
-{% block jumbotron %}
-<div class="jumbotron">
-        <h1>lorem ipsum παιδικές εκδηλώσεις</h1>
-        <p>Δείτε την λίστα με τις <a href="/events/">εκδηλώσεις</a>.</p>
-      </div>
-{% endblock %}
+{% block maincontent %}
+<body id="page-top">
+	<header class="masthead">
+		<div class="container">
+			<br>
+			<img src="../static/images/lorem-ipsum-logo.jpg" width="50%" alt=""><br><br>
+			<h2>Παιδικές Εκδηλώσεις</h2>
+			<p>Δείτε την λίστα με τις <a href="/events">εκδηλώσεις</a> </p><br>
+		</div>
+	</header>
 
+	<!-- Categories Grid -->
+	<section class="bg-light" id="portfolio">
+	  <div class="container">
+	    <div class="row">
+	      <div class="col-lg-12 text-center">
+	        <h2 class="section-subheading text-muted">Κατηγορίες</h2><br/>
+	      </div>
+	    </div>
+	    <div class="row">
+	      <div class="col-md-4 col-sm-6 portfolio-item">
+	        <a class="portfolio-link" href="http://localhost:8000/events/?csrfmiddlewaretoken=sHkxcm4VlvD5VHU8E7BAQgU5bFaNHICgj7xsbm5kLIbLTu9H8CWsach7jTQlTvMc&event_type=1&age_range=&title=">
+	          <div class="portfolio-hover">
+	            <div class="portfolio-hover-content">
+	              <i class="fa fa-external-link fa-3x"></i>
+	            </div>
+	          </div>
+	          <img class="img-fluid" src="../static/images/theatre.png" alt="">
+	        </a>
+	        <div class="portfolio-caption">
+	          <h4>Παιδικά Θέατρα</h4>
+	        </div>
+	      </div>
+	      <div class="col-md-4 col-sm-6 portfolio-item">
+	        <a class="portfolio-link" href="http://localhost:8000/events/?csrfmiddlewaretoken=uNPbbSnWhbXLTPL3DKDnXCGKwQVsMNdzld26aSolHovrRC0C7fYfhy3ME4B0YAnv&event_type=2&age_range=&title=">
+	          <div class="portfolio-hover">
+	            <div class="portfolio-hover-content">
+	              <i class="fa fa-external-link fa-3x"></i>
+	            </div>
+	          </div>
+	          <img class="img-fluid" src="../static/images/concert.png" alt="">
+	        </a>
+	        <div class="portfolio-caption">
+	          <h4>Συναυλίες</h4>
+	        </div>
+	      </div>
+	      <div class="col-md-4 col-sm-6 portfolio-item">
+	        <a class="portfolio-link" href="http://localhost:8000/events/?csrfmiddlewaretoken=p3IuUWkNlav3jdK0O3ibsqLFQwWkmE3FgtVpTWlcLn3Jh0ZziyD3Mm8HYKCSyrdB&event_type=3&age_range=&title=">
+	          <div class="portfolio-hover">
+	            <div class="portfolio-hover-content">
+	              <i class="fa fa-external-link fa-3x"></i>
+	            </div>
+	          </div>
+	          <img class="img-fluid" src="../static/images/game.png" alt="">
+	        </a>
+	        <div class="portfolio-caption">
+	          <h4>Παιδότοποι</h4>
+	        </div>
+	      </div>
+	      <div class="col-md-4 col-sm-6 portfolio-item">
+	        <a class="portfolio-link" href="http://localhost:8000/events/?csrfmiddlewaretoken=lbFwzIFsTLk63cl0v3Qhocv2O40tOihscBSryIGRjYSM1ZAzZyb9I8S4WiG105ro&event_type=4&age_range=&title=">
+	          <div class="portfolio-hover">
+	            <div class="portfolio-hover-content">
+	              <i class="fa fa-external-link fa-3x"></i>
+	            </div>
+	          </div>
+	          <img class="img-fluid" src="../static/images/cake.png" alt="">
+	        </a>
+	        <div class="portfolio-caption">
+	          <h4>Πάρτυ</h4>
+	        </div>
+	      </div>
+	      <div class="col-md-4 col-sm-6 portfolio-item">
+	        <a class="portfolio-link" href="http://localhost:8000/events/?csrfmiddlewaretoken=V4vw5ZxCqQ8uy9rwHgort2JEPyQYvTbGMuIr4Zy1Q3GawWG5bLJjNY6GXMwwHGlC&event_type=5&age_range=&title=">
+	          <div class="portfolio-hover">
+	            <div class="portfolio-hover-content">
+	              <i class="fa fa-external-link fa-3x"></i>
+	            </div>
+	          </div>
+	          <img class="img-fluid" src="../static/images/submarine.png" alt="">
+	        </a>
+	        <div class="portfolio-caption">
+	          <h4>Εκπαιδικές Εκδρομές</h4>
+	        </div>
+	      </div>
+	      <div class="col-md-4 col-sm-6 portfolio-item">
+	        <a class="portfolio-link" href="http://localhost:8000/events/?csrfmiddlewaretoken=WqbOW7zJQZRnHi7TjgnCDlDE91NnEuwDNQoJV7A8gcp3F5msNLIuXh0GhftVQhGz&event_type=6&age_range=&title=">
+	          <div class="portfolio-hover">
+	            <div class="portfolio-hover-content">
+	              <i class="fa fa-external-link fa-3x"></i>
+	            </div>
+	          </div>
+	          <img class="img-fluid" src="../static/images/ping-pong.png" alt="">
+	        </a>
+	        <div class="portfolio-caption">
+	          <h4>Αθλητικές δραστηριότητες</h4>
+	        </div>
+	      </div>
+				<div class="col-md-4 col-sm-6 portfolio-item">
+	        <a class="portfolio-link" href="http://localhost:8000/events/?csrfmiddlewaretoken=42x4svkZPognGaRzf9K4cKHcqJ0tBvgcVsKZrvlofBO3EX68JE5WwG4eyXG1Niq8&event_type=7&age_range=&title=">
+	          <div class="portfolio-hover">
+	            <div class="portfolio-hover-content">
+	              <i class="fa fa-external-link fa-3x"></i>
+	            </div>
+	          </div>
+	          <img class="img-fluid" src="../static/images/circus.png" alt="">
+	        </a>
+	        <div class="portfolio-caption">
+	          <h4>Πάρκα Αναψυχής</h4>
+	        </div>
+	      </div>
+				<div class="col-md-4 col-sm-6 portfolio-item">
+	        <a class="portfolio-link" href="http://localhost:8000/events/?csrfmiddlewaretoken=LR4wYjUxXUW5ptNiTTDylAVB0qwqwNVaChhrXjVWn7uLng2RnoYqFwiD8EcYIA56&event_type=8&age_range=&title=">
+	          <div class="portfolio-hover">
+	            <div class="portfolio-hover-content">
+	              <i class="fa fa-external-link fa-3x"></i>
+	            </div>
+	          </div>
+	          <img class="img-fluid" src="../static/images/cabin.png" alt="">
+	        </a>
+	        <div class="portfolio-caption">
+	          <h4>Παιδικές Κατασκηνώσεις</h4>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</section>
 
-{% block content %}
-<h1>Hello world!</h1>
+	<!-- Sign up timeline -->
+	<section id="about">
+	  <div class="container">
+	    <div class="row">
+	      <div class="col-lg-12 text-center">
+	        <h2 class="section-subheading text-muted">Γίνε Μέλος!</h2><br/>
+	      </div>
+	    </div>
+	    <div class="row">
+	      <div class="col-lg-12">
+	        <ul class="timeline">
+	          <li>
+	            <div class="timeline-image">
+	              <img class="rounded-circle img-fluid" src="../static/images/keyboard.png" alt="">
+	            </div>
+	            <div class="timeline-panel">
+	              <div class="timeline-heading">
+	                <h4 class="subheading">Εγγραφή</h4>
+	              </div>
+	              <div class="timeline-body">
+	                <p class="text-muted">Συμπλήρωσε τη φόρμα εγγραφής ως γονέας για να βρεις τις δραστηριότητες που θέλεις!</p>
+	              </div>
+	            </div>
+	          </li>
+	          <li class="timeline-inverted">
+	            <div class="timeline-image">
+	              <img class="rounded-circle img-fluid" src="../static/images/search.png" alt="">
+	            </div>
+	            <div class="timeline-panel">
+	              <div class="timeline-heading">
+	                <h4 class="subheading">Αναζήτηση</h4>
+	              </div>
+	              <div class="timeline-body">
+	                <p class="text-muted">Αναζήτησε τη δραστηριότητα που θέλεις με βάση τα κριτήρια που θες!</p>
+	              </div>
+	            </div>
+	          </li>
+	          <li>
+	            <div class="timeline-image">
+	              <img class="rounded-circle img-fluid" src="../static/images/money.png" alt="">
+	            </div>
+	            <div class="timeline-panel">
+	              <div class="timeline-heading">
+	                <h4 class="subheading">Αγορά</h4>
+	              </div>
+	              <div class="timeline-body">
+	                <p class="text-muted">Αγόρασε το εισητήριό σου με τα ειδικά coins!</p>
+	              </div>
+	            </div>
+	          </li>
+	          <li class="timeline-inverted">
+	            <div class="timeline-image">
+	              <h4><br>Have fun!</h4>
+	            </div>
+	          </li>
+	        </ul>
+					<br>
+					<div class="row">
+			      <div class="col-lg-12 text-center">
+							<a class="text-center btn btn-secondary btn-md text-uppercase" href="/accounts/signup">Εγγραφη</a>
+						</div>
+					</div>
+	      </div>
+	    </div>
+	  </div>
+	</section>
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<span class="copyright">Copyright © Lorem Ipsum 2018</span>
+				</div>
+				<div class="col-md-4">
+					<ul class="list-inline social-buttons">
+						<li class="list-inline-item">
+							<a href="https://github.com/epilys/lorem-ipsum">
+								<i class="fa fa-github"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-md-4"></div>
+			</div>
+		</div>
+	</footer>
+</body>
 {% endblock %}

@@ -1,49 +1,69 @@
 {% extends 'base.html' %}
-
 {% block content %}
- 
 {% if user.is_authenticated %}
-    
-    {% if user.is_provider %}
+{% if user.is_provider %}
+<header class="masthead">
+  <div class="container">
+    <br><br>
+    <img src="../../static/images/lorem-ipsum-statistics.png" width="50%" alt=""><br><br>
+    <p> Μηνιαία Στατιστικά Στοιχεία </p><br>
+  </div>
+</header>
 
-		<div class="row">
-           	<p> 
-           	<h3>Μηνιαία Στατιστικά:</h3>
-           	</p>
-           	<br>
-           	{% for month, event_dict in stats_per_month.items %}
-           		<h4 id="monyear"></h4>
-           		<script>
-           			var year = String({{ month }}).substr(0,4);
-           			var mon = String({{ month }}).substr(4,2);
-           			document.getElementById("monyear").id = String({{ month }});
-           			document.getElementById({{ month }}).innerHTML = mon + " - " + year;
-           		</script>
-           		<table class="table table-condensed table-bordered">
-           			<tr>
-	                 	<th>Όνομα Εκδήλωσης</th>
-	                 	<th>Πλήθος Εισιτηρίων</th>
-	                 	<th>Έσοδα Εισιτηρίων (σε €)</th>
-	                </tr>
-           			{% for event, stats in event_dict.items %}
-           			<tr>
-		                <td>{{ event }}</td>
-		                <td>{{ stats.total_amount }}</td>
-		                <td>{{ stats.total_cost }}</td>
-					</tr>
-           			{% endfor %}
-            	</table>
-            	<br>
-            {% endfor %}
-        </div>    	
-
-
-
-
-    {% else %} <h2>You are not authorized to enter here!</h2>
-
-    {% endif %}
- 
+<section class="bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        {% for month, event_dict in stats_per_month.items %}
+        <h5 id="monyear"></h5>
+        <script>
+           var year = String({{ month }}).substr(0,4);
+           var mon = String({{ month }}).substr(4,2);
+           document.getElementById("monyear").id = String({{ month }});
+           document.getElementById({{ month }}).innerHTML = mon + " - " + year;
+        </script>
+        <table class="table table-condensed table-bordered">
+           <tr>
+              <th>Όνομα Εκδήλωσης</th>
+              <th>Πλήθος Εισιτηρίων</th>
+              <th>Έσοδα Εισιτηρίων (σε €)</th>
+           </tr>
+           {% for event, stats in event_dict.items %}
+           <tr>
+              <td>{{ event }}</td>
+              <td>{{ stats.total_amount }}</td>
+              <td>{{ stats.total_cost }}</td>
+           </tr>
+           {% endfor %}
+        </table>
+        <br>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% else %}
+<h2>You are not authorized to enter here!</h2>
+{% endif %}
 {% endif %}
 
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <span class="copyright">Copyright © Lorem Ipsum 2018</span>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-inline social-buttons">
+          <li class="list-inline-item">
+            <a href="https://github.com/epilys/lorem-ipsum">
+              <i class="fa fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</footer>
 {% endblock %}

@@ -1,178 +1,231 @@
 {% extends 'base.html' %}
 
 {% block content %}
- 
+
 {% if user.is_authenticated %}
     {% if user.is_parent %}
-        <h1> Καλωσήρθες, {{user.username}} </h1>
-		 
-		<div class="container">
-		      <div class="row">
-		      <br>
-		            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
-		   
-		   
-		          <div class="panel panel-info">
-		            <div class="panel-heading">
-		              <center><h3 class="panel-title"> {{user.parent.full_name}} </h3></center>
-		            </div>
-		            <div class="panel-body">
-		              <div class="row">
-		                  <table class="table table-user-information">
-		                    <tbody>
-		                      <tr>
-		                        <td>Διεύθυνση</td>
-		                        <td> {{user.parent.address}} </td>
-		                      </tr>
-		                      <tr>
-		                        <td>Email</td>
-		                        <td><a href="mailto:">{{user.parent.email}}</a></td>
-		                     </tr>
-		                     <tr>
-		                        <td>Υπολοιπόμενα Coins</td>
-		                        <td> {{user.parent.coins}} </td>
-		                      </tr>
-		                     <tr>
-		                        <td>Ημερομηνία Εγγραφής</td>
-		                        <td> {{user.date_joined}} </td>
-		                      </tr>
+    <header class="masthead">
+      <div class="container">
+        <br>
+        <img src="../../static/images/lorem-ipsum-profile.png" width="50%" alt=""><br><br>
+        <h3>Καλωσήρθες, {{user.username}}</h3><br>
+      </div>
+    </header>
 
-		                    </tbody>
-		                  </table>
-		                  <center>
-		                  <a href="{% url 'buy_coins' %}" class="btn btn-primary">Αγορά Coins</a>
-		              	  </center>
-		                </div>
-		              </div>
-		            </div>
-
-              <h2> Ιστορικό αγορών </h2>
-              <table class="table table-condensed table-bordered">
-                <tr>
-                  <th>Τίτλος</th>
-                  <th>Ημερομηνία Αγοράς</th>
-                  <th>Διοργανωτής</th>
-                  <th>Ποσότητα</th>
-                  <th>Κόστος</th>
-                </tr>
-              {% for t in transactions %}
-              <tr>
-                <td>{{ t.event.title }}, {{ t.event.event_date }}</td>
-                <td>{{ t.date }}</td>
-                <td>{{ t.event.provider.full_name }}</td>
-                <td>{{ t.amount }}</td>
-                <td>{{ t.total_cost}}</td>
-              </tr>
-              {% endfor %}
-              </table>
-		          </div>
-		        </div>
- 
- 
-    {% elif user.is_provider %}
- 
-		 <div class="container">
-		      <div class="row">
-		      <br>
-		            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
-		   
-		   
-                  <p>
-                  <a href="{{ user.provider.get_absolute_url }}" class="btn btn-default">Δημόσιο προφίλ</a>
-                  </p>
-		          <div class="panel panel-info">
-		            <div class="panel-heading">
-		              <center><h3 class="panel-title"> {{user.provider.full_name}} </h3></center>
-		            </div>
-		            <div class="panel-body">
-		              <div class="row">
-		                  <table class="table table-user-information">
-		                    <tbody>
-		                      <tr>
-		                        <td>Διεύθυνση</td>
-		                        <td> {{user.provider.address}} </td>
-		                      </tr>
-		                      <tr>
-		                        <td>Email</td>
-		                        <td><a href="mailto:">{{user.provider.email}}</a></td>
-		                     </tr>
-		                     <tr>
-		                        <td>ΑΦΜ</td>
-		                        <td> {{user.provider.afm}}</td>
-		                     </tr>
-		                     <tr>
-		                        <td>ΔΟΥ</td>
-		                        <td>{{user.provider.doy}}</td>
-		                     </tr>
-		                     <tr>
-		                        <td>Νομικός Εκπρόσωπος</td>
-		                        <td>{{user.provider.legal_representative}}</td>
-		                     </tr>
-		                     <tr>
-		                        <td>Αριθμός Δελτίου Ταυτότητας</td>
-		                        <td>{{user.provider.adt}}</td>
-		                     </tr>
-		                     {% if user.provider.site != None %}
-		                     <tr>
-		                        <td>Ιστοσελίδα</td>
-		                        <td><a href="{{user.provider.site}}">{{user.provider.site}}</a></td>
-		                     </tr>
-		                     {% endif %}
-		                     <tr>
-		                        <td>Ημερομηνία Εγγραφής</td>
-		                        <td> {{user.date_joined}} </td>
-		                     </tr>
-		                    </tbody>
-		                  </table>
-		                  <center>
-		                  <a href="{% url 'edit' %}" class="btn btn-primary">Επεξεργασία Στοιχείων</a>
-		                  <a href="{% url 'add_event' %}" class="btn btn-primary">Δημιουργία Εκδήλωσης</a>
-		                  <a href="{% url 'change_password' %}" class="btn btn-primary">Αλλαγή Κωδικού</a>
-		              	  </center>
-		                </div>
-		              </div>
-		            </div>
-		          </div>
-		        </div>   
-            <div class="row">
-              <p> 
-              Στατιστικά:
-              </p>
-              <table class="table table-condensed table-bordered">
-                <tr>
-                  <th>Κατηγορία εκδήλωσης</th>
-                  <th>Ποσοστό αγορών</th>
-                </tr>
-              {% for e, v in stats_types.items %}
-              <tr>
-                <td>{{ v.type }}</td>
-                <td>{{ v.counter }}%</td>
-              </tr>
-              {% endfor %}
-              </table>
-              <table class="table table-condensed table-bordered">
-                <tr>
-                  <th>Ηλικιακό εύρος</th>
-                  <th>Ποσοστό αγορών</th>
-                </tr>
-              {% for e, v in stats_ranges.items %}
-              <tr>
-                <td>{{ v.range }}</td>
-                <td>{{ v.counter }}%</td>
-              </tr>
-              {% endfor %}
-              </table>
+    <section class="bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <center><h4 class="panel-title"> {{user.parent.full_name}} </h4></center><br>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>Διεύθυνση</td>
+                        <td> {{user.parent.address}} </td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td><a href="mailto:">{{user.parent.email}}</a></td>
+                      </tr>
+                      <tr>
+                        <td>Υπολοιπόμενα Coins</td>
+                        <td> {{user.parent.coins}} </td>
+                      </tr>
+                      <tr>
+                        <td>Ημερομηνία Εγγραφής</td>
+                        <td> {{user.date_joined}} </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-             <a href="{% url 'stats_per_month' %}" class="btn btn-primary">Μηνιαία Reports</a>
-     </div>
- 	
- 	{% else %}	<h2> You have no business here buddy. Go to the Django admin page! </h2>
+          </div>
+        </div>
+        <div class="row"><br>
+          <div class="col-lg-12 text-center">
+            <a class="text-center btn btn-primary btn-md" href="{% url 'buy_coins' %}">Αγορά Coins</a><br><br><br>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div class="panel panel-info">
+              <div class="panel-body">
+                <div class="row">
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <th>Τίτλος</th>
+                        <th>Ημερομηνία Αγοράς</th>
+                        <th>Διοργανωτής</th>
+                        <th>Ποσότητα</th>
+                        <th>Κόστος</th>
+                      </tr>
+                    {% for t in transactions %}
+                    <tr>
+                      <td>{{ t.event.title }}, {{ t.event.event_date }}</td>
+                      <td>{{ t.date }}</td>
+                      <td>{{ t.event.provider.full_name }}</td>
+                      <td>{{ t.amount }}</td>
+                      <td>{{ t.total_cost}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% elif user.is_provider %}
+    <header class="masthead">
+      <div class="container">
+        <br>
+        <img src="../../static/images/lorem-ipsum-profile-provider.png" width="50%" alt=""><br><br>
+        <h3>Καλωσήρθες, {{user.username}}</h3><br>
+      </div>
+    </header>
 
-    {% endif %}
- 
- 
-{% else %} <h2>You are not authorized to enter here, please Sign Up or Log In if you have an account!</h2>
- 
+    <section class="bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <center><h4 class="panel-title"> {{user.provider.full_name}} </h4></center><br>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>Διεύθυνση</td>
+                        <td> {{user.provider.address}} </td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td><a href="mailto:">{{user.provider.email}}</a></td>
+                      </tr>
+                      <tr>
+                        <td>ΑΦΜ</td>
+                        <td> {{user.provider.afm}}</td>
+                      </tr>
+                      <tr>
+                        <td>ΔΟΥ</td>
+                        <td>{{user.provider.doy}}</td>
+                      </tr>
+                      <tr>
+                        <td>Νομικός Εκπρόσωπος</td>
+                        <td>{{user.provider.legal_representative}}</td>
+                      </tr>
+                      <tr>
+                        <td>Αριθμός Δελτίου Ταυτότητας</td>
+                        <td>{{user.provider.adt}}</td>
+                      </tr>
+                      {% if user.provider.site != None %}
+                      <tr>
+                        <td>Ιστοσελίδα</td>
+                        <td><a href="{{user.provider.site}}">{{user.provider.site}}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                          <td>Ημερομηνία Εγγραφής</td>
+                          <td> {{user.date_joined}} </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row"><br>
+          <div class="col-lg-12 text-center"><br>
+            <a class="text-center btn btn-primary btn-md" href="{% url 'edit' %}">Επεξεργασία Στοιχείων</a>
+            <a class="text-center btn btn-primary btn-md" href="{% url 'add_event' %}">Δημιουργία Εκδήλωσης</a>
+            <a href="{% url 'change_password' %}" class="btn btn-primary">Αλλαγή Κωδικού</a>
+          </div>
+        </div><br><br>
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div class="panel panel-info">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-12 text-center">
+                    <h5>Στατιστικά:</h5>
+                    <table class="table table-user-information">
+                      <tbody>
+                        <tr>
+                          <th>Κατηγορία εκδήλωσης</th>
+                          <th>Ποσοστό αγορών</th>
+                        </tr>
+                        {% for e, v in stats_types.items %}
+                        <tr>
+                          <td>{{ v.type }}</td>
+                          <td>{{ v.counter }}%</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    <table class="table table-user-information">
+                      <tbody>
+                        <tr>
+                          <th>Ηλικιακό εύρος</th>
+                          <th>Ποσοστό αγορών</th>
+                        </tr>
+                        {% for e, v in stats_ranges.items %}
+                        <tr>
+                          <td>{{ v.range }}</td>
+                          <td>{{ v.counter }}%</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <a href="{% url 'stats_per_month' %}" class="btn btn-primary text-center">Μηνιαία Reports</a>
+          </div>
+        </div>
+      </div>
+    </section>
+ 	{% else %}
+  <h2> You have no business here buddy. Go to the Django admin page! </h2>
+  {% endif %}
+{% else %}
+<h2>You are not authorized to enter here, please Sign Up or Log In if you have an account!</h2>
 {% endif %}
 
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <span class="copyright">Copyright © Lorem Ipsum 2018</span>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-inline social-buttons">
+          <li class="list-inline-item">
+            <a href="https://github.com/epilys/lorem-ipsum">
+              <i class="fa fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</footer>
 {% endblock %}
