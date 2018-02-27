@@ -37,3 +37,31 @@
 ### Πώς εφαρμόζουμε αλλαγές των models στη βάση
 
 `sudo docker-compose run web python3 loremipsum/manage.py migrate`
+
+
+## Deployment
+
+`sudo ./loremipsum.sh
+`
+ Αφού γίνει populate η βάση, έχουμε τους παρακάτω χρήστες:
+ 
+ 
+#### ADMIN
+ 
+ Username: admin  Password: loremipsum2018!
+ 
+ 
+#### PROVIDERS
+ 
+ Username: paliatsos Password: provider
+ 
+ Username: paidikixara Password: provider
+ 
+ Username: partyanimal Password: provider
+
+
+#### PARENTS
+ 
+ Username: george_stathis Password: parent
+ 
+ Username: nikos_pappas Password: parent
