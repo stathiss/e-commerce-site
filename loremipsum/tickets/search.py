@@ -1,5 +1,5 @@
 from elasticsearch_dsl.connections import connections
-from elasticsearch_dsl import DocType, Text, Date
+from elasticsearch_dsl import DocType, Text, Date, Index
 from elasticsearch.helpers import bulk
 from elasticsearch import Elasticsearch
 from . import models
@@ -19,12 +19,15 @@ class EventPostIndex(DocType):
 
     class Meta:
         index = 'event-index'
+events_idx = Index('events')
+events_idx.settings(blocks={'read_only_allow_delete':False})
+events_idx.doc_type(EventPostIndex)
 
 """
 This function indexes all existing Events. Call it from a django shell session
 manually
 """
 def bulk_indexing():
-    EventPostIndex.init()
+    events_idx.create()
     es = Elasticsearch('elasticsearch:9200')
     bulk(client=es, actions=(b.indexing() for b in models.Event.objects.all().iterator()))
