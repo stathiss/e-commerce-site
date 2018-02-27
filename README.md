@@ -44,25 +44,26 @@
 
 `sudo ./loremipsum.sh
 `
+
  Αφού γίνει populate η βάση, έχουμε τους παρακάτω χρήστες:
  
  
 #### ADMIN
  
- Username: admin  Password: loremipsum2018!
+ Username: admin   Password: loremipsum2018!
  
  
 #### PROVIDERS
  
- Username: paliatsos Password: provider
+ Username: paliatsos   Password: provider
  
- Username: paidikixara Password: provider
+ Username: paidikixara   Password: provider
  
- Username: partyanimal Password: provider
+ Username: partyanimal   Password: provider
 
 
 #### PARENTS
  
- Username: george_stathis Password: parent
+ Username: george_stathis   Password: parent
  
- Username: nikos_pappas Password: parent
+ Username: nikos_pappas   Password: parent
