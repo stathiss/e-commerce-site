@@ -152,6 +152,7 @@
             <a class="text-center btn btn-primary btn-md" href="{% url 'edit' %}">Επεξεργασία Στοιχείων</a>
             <a class="text-center btn btn-primary btn-md" href="{% url 'add_event' %}">Δημιουργία Εκδήλωσης</a>
             <a href="{% url 'change_password' %}" class="btn btn-primary">Αλλαγή Κωδικού</a>
+            <a href="{{ user.provider.get_absolute_url }}" class="btn btn-primary">Προβολή Δημόσιου Προφίλ</a>
           </div>
         </div><br><br>
         <div class="row">

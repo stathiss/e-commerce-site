@@ -118,7 +118,7 @@ class ParentSignUpView(CreateView):
     template_name = '../templates/registration/signup_form.html'
 
     def get_context_data(self, **kwargs):
-        kwargs['user_type'] = 'parent'
+        kwargs['user_type'] = 'Γονέας'
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
@@ -153,7 +153,7 @@ def model_form_upload(request):
     else:
         form = ProviderSignUpForm()
     return render(request, '../templates/registration/signup_form.html', {
-        'form': form
+        'form': form, 'user_type' : 'Πάροχος'
     })
 
 

@@ -19,7 +19,6 @@
       <div class="col-lg-4 text-left">
         <h4 class="text-center">Αγορά ενός εισιτηρίου για την εκδήλωση {{ event.title }}? </h4><br>
         <div>
-          <p>Το νέο σας υπόλοιπο μετά από την αγορά θα είναι <b>{{ new_balance }}</b> coins. Θέλετε να συνεχίσετε;</p>
           <form role="form" action="" method="post">
              {% csrf_token %}
              {{ form|crispy }}
