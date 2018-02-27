@@ -38,6 +38,7 @@
 
 `sudo docker-compose run web python3 loremipsum/manage.py migrate`
 
+---
 
 ## Deployment
 
