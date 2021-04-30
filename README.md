@@ -1,40 +1,43 @@
-Γιώργος Δημητρακόπουλος , 03113211, gdim95@gmail.com  
-Χρήστος Αναγνώστου      , 03113166, xristosanagnostou95@hotmail.com  
-Γιώργος Στάθης		, 03113008, geor_stath@hotmail.com  
-Μάνος Πιτσιδιανάκης	, 03113635, el13635@mail.ntua.gr  
-Ξενοφών Τσέκας		, 03113120, tsekasxenophon@gmail.com  
-Ηλέκτρα Σκεπετάρη	, 03113074, electra@fsu.gr  
-Κατερίνα Κουτσούρη	, 03113107, Katerina@fsu.gr  
+# Description
 
----
+This is an e-commerce site, built by a 6 member team for Software Engineer
+ class in National Technical University of Athens. You can buy tickets for
+children events or create an event for your own.
+
 
 ## Deploy:
 
-#### Local deployment of Docker/Django. Follow steps
+#### Local deployment of Docker / Django. Follow steps
 
 1. [Download Docker](https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#install-using-the-repository)  
-Όλα τα βήματα, έως και το run hello-world.
+Contains all steps until running hello-world.
 2. [Download Docker Compose](https://docs.docker.com/compose/install/)
 3. git pull το lorem-ipsum repo
 4. sudo docker-compose up
-5. Ανοίγω localhost:8000, πρέπει να βλέπω το django
+5. In localhost:8000, django should be available
 
 
 ## Development
 
-### Πώς τρέχουμε τον server 
+### How to run server 
 
 `sudo docker-compose up`
 
-### Πώς τρέχουμε εντολές με το manage.py στο docker
+### How to run manage.py commands inside docker
 
 `sudo docker-compose run web python3 loremipsum/manage.py ...`
 
-### Πώς φτιάχνουμε χρήστη για το django admin
+### How to create user for django admin
 
 `sudo docker-compose run web python3 loremipsum/manage.py createsuperuser`
 
-### Πώς εφαρμόζουμε αλλαγές των models στη βάση
+
+### How to apply create changes
+
+`sudo docker-compose run web python3 loremipsum/manage.py makemigrations`
+
+
+### How to apply model changes
 
 `sudo docker-compose run web python3 loremipsum/manage.py migrate`
 
@@ -45,7 +48,7 @@
 `sudo ./loremipsum.sh
 `
 
- Αφού γίνει populate η βάση, έχουμε τους παρακάτω χρήστες:
+ After database is populated, following users should exist:
  
  
 #### ADMIN
